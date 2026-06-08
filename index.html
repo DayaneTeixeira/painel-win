@@ -7,16 +7,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
   :root {
-    --bg: #ffffff;
-    --bg2: #f5f5f3;
-    --bg3: #efefec;
-    --text: #1a1a18;
-    --text2: #5a5a57;
-    --text3: #9a9a96;
-    --border: rgba(0,0,0,0.09);
-    --border2: rgba(0,0,0,0.16);
-    --radius: 8px;
-    --radius-lg: 12px;
+    --bg: #ffffff; --bg2: #f5f5f3; --bg3: #efefec;
+    --text: #1a1a18; --text2: #5a5a57; --text3: #9a9a96;
+    --border: rgba(0,0,0,0.09); --border2: rgba(0,0,0,0.16);
+    --radius: 8px; --radius-lg: 12px;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -28,18 +22,14 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg3);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 20px 16px;
+    background: var(--bg3); color: var(--text);
+    min-height: 100vh; padding: 20px 16px;
   }
   .container { max-width: 1100px; margin: 0 auto; }
-
   .topbar {
     display: flex; align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
-    flex-wrap: wrap; gap: 10px;
+    margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
   }
   .topbar-left { display: flex; align-items: center; gap: 12px; }
   .logo {
@@ -48,37 +38,28 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; font-weight: 500; flex-shrink: 0;
   }
-  .ttl  { font-size: 16px; font-weight: 500; color: var(--text); }
-  .sub  { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .ttl { font-size: 16px; font-weight: 500; color: var(--text); }
+  .sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
   .badge {
-    font-size: 10px; font-weight: 500;
-    padding: 3px 10px; border-radius: 20px;
-    background: #E1F5EE; color: #085041;
+    font-size: 10px; font-weight: 500; padding: 3px 10px;
+    border-radius: 20px; background: #E1F5EE; color: #085041;
     border: 0.5px solid #5DCAA5;
     display: flex; align-items: center; gap: 4px;
   }
-
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 10px; margin-bottom: 12px;
   }
   .card {
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
+    background: var(--bg); border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
   }
   .card.r1, .card.r2 { border-top: 3px solid #185FA5; }
   .card.r3, .card.r4 { border-top: 3px solid #854F0B; }
   .card.r5            { border-top: 3px solid #0F6E56; }
-
   .card-top { padding: 10px 12px 8px; }
-  .rank-row {
-    display: flex; align-items: center;
-    justify-content: space-between; margin-bottom: 5px;
-  }
+  .rank-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
   .rank { font-size: 10px; color: var(--text3); font-weight: 500; }
   .tag  { font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 4px; }
   .t-us { background: #E6F1FB; color: #0C447C; }
@@ -92,50 +73,24 @@
   }
   .sym  { font-size: 15px; font-weight: 500; color: var(--text); }
   .name { font-size: 10px; color: var(--text3); margin-top: 2px; }
-
-  .tv-frame {
-    width: 100%; height: 130px;
-    border: none; display: block;
-    background: var(--bg2);
-  }
-
+  .widget-wrap { width: 100%; background: var(--bg2); }
   .card-why {
-    padding: 7px 12px;
-    font-size: 10px; color: var(--text3);
-    line-height: 1.5;
-    border-top: 0.5px solid var(--border);
+    padding: 7px 12px; font-size: 10px; color: var(--text3);
+    line-height: 1.5; border-top: 0.5px solid var(--border);
   }
-
   .signal {
     display: flex; align-items: flex-start; gap: 10px;
-    background: var(--bg);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 12px 16px;
-    margin-bottom: 8px;
+    background: var(--bg); border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 12px 16px; margin-bottom: 8px;
   }
-  .sdot {
-    width: 9px; height: 9px; border-radius: 50%;
-    background: var(--text3); flex-shrink: 0; margin-top: 3px;
-  }
+  .sdot { width: 9px; height: 9px; border-radius: 50%; background: var(--text3); flex-shrink: 0; margin-top: 3px; }
   .stitle { font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 3px; }
   .sdesc  { font-size: 12px; color: var(--text2); line-height: 1.6; }
-
-  .footer-row {
-    display: flex; align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap; gap: 4px;
-  }
+  .footer-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
   .clock { font-size: 11px; color: var(--text3); font-variant-numeric: tabular-nums; }
   .note  { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
-
-  @media (max-width: 600px) {
-    .grid { grid-template-columns: 1fr 1fr; }
-    .tv-frame { height: 110px; }
-  }
-  @media (max-width: 380px) {
-    .grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 380px) { .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -160,80 +115,55 @@
     <!-- #1 ES1! -->
     <div class="card r1">
       <div class="card-top">
-        <div class="rank-row">
-          <span class="rank">#1</span>
-          <span class="tag t-us">EUA</span>
-        </div>
+        <div class="rank-row"><span class="rank">#1</span><span class="tag t-us">EUA</span></div>
         <div class="sym">ES1!</div>
         <div class="name">Futuro S&P 500</div>
       </div>
-      <iframe class="tv-frame"
-        src="https://www.tradingview.com/widgetembed/?frameElementId=tv_es&symbol=CME_MINI%3AES1%21&interval=5&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=0&saveimage=0&studies=%5B%5D&theme=light&style=3&timezone=America%2FSao_Paulo&withdateranges=0&showpopupbutton=0&locale=br"
-        allowtransparency="true" scrolling="no" title="ES1! chart"></iframe>
+      <div class="widget-wrap" id="w1"></div>
       <div class="card-why">Move o WIN overnight. Principal referência global.</div>
     </div>
 
     <!-- #2 VIX -->
     <div class="card r2">
       <div class="card-top">
-        <div class="rank-row">
-          <span class="rank">#2</span>
-          <span class="tag t-us">EUA</span>
-        </div>
+        <div class="rank-row"><span class="rank">#2</span><span class="tag t-us">EUA</span></div>
         <div class="sym">VIX</div>
         <div class="name">Volatilidade S&P</div>
       </div>
-      <iframe class="tv-frame"
-        src="https://www.tradingview.com/widgetembed/?frameElementId=tv_vix&symbol=CBOE%3AVIX&interval=5&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=0&saveimage=0&studies=%5B%5D&theme=light&style=3&timezone=America%2FSao_Paulo&withdateranges=0&showpopupbutton=0&locale=br"
-        allowtransparency="true" scrolling="no" title="VIX chart"></iframe>
+      <div class="widget-wrap" id="w2"></div>
       <div class="card-why">Acima de 25 = fuga de risco. Correlação inversa direta.</div>
     </div>
 
     <!-- #3 DXY -->
     <div class="card r3">
       <div class="card-top">
-        <div class="rank-row">
-          <span class="rank">#3</span>
-          <span class="tag t-fx">Câmbio</span>
-        </div>
+        <div class="rank-row"><span class="rank">#3</span><span class="tag t-fx">Câmbio</span></div>
         <div class="sym">DXY</div>
         <div class="name">Índice do dólar</div>
       </div>
-      <iframe class="tv-frame"
-        src="https://www.tradingview.com/widgetembed/?frameElementId=tv_dxy&symbol=TVC%3ADXY&interval=5&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=0&saveimage=0&studies=%5B%5D&theme=light&style=3&timezone=America%2FSao_Paulo&withdateranges=0&showpopupbutton=0&locale=br"
-        allowtransparency="true" scrolling="no" title="DXY chart"></iframe>
+      <div class="widget-wrap" id="w3"></div>
       <div class="card-why">Dólar forte drena emergentes. Pesa no WIN via fluxo.</div>
     </div>
 
     <!-- #4 USD/BRL -->
     <div class="card r4">
       <div class="card-top">
-        <div class="rank-row">
-          <span class="rank">#4</span>
-          <span class="tag t-fx">Câmbio</span>
-        </div>
+        <div class="rank-row"><span class="rank">#4</span><span class="tag t-fx">Câmbio</span></div>
         <div class="sym">USD/BRL</div>
         <div class="name">Dólar / Real</div>
       </div>
-      <iframe class="tv-frame"
-        src="https://www.tradingview.com/widgetembed/?frameElementId=tv_usdbrl&symbol=FX%3AUSDBRL&interval=5&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=0&saveimage=0&studies=%5B%5D&theme=light&style=3&timezone=America%2FSao_Paulo&withdateranges=0&showpopupbutton=0&locale=br"
-        allowtransparency="true" scrolling="no" title="USD/BRL chart"></iframe>
+      <div class="widget-wrap" id="w4"></div>
       <div class="card-why">Câmbio local. Alta do dólar pressiona o Ibovespa.</div>
     </div>
 
     <!-- #5 WTI -->
     <div class="card r5">
       <div class="card-top">
-        <div class="rank-row">
-          <span class="rank">#5</span>
-          <span class="tag t-cm">Commodity</span>
-        </div>
+        <div class="rank-row"><span class="rank">#5</span><span class="tag t-cm">Commodity</span></div>
         <div class="sym">WTI</div>
         <div class="name">Petróleo WTI</div>
       </div>
-      <iframe class="tv-frame"
-        src="https://www.tradingview.com/widgetembed/?frameElementId=tv_wti&symbol=NYMEX%3ACL1%21&interval=5&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=0&saveimage=0&studies=%5B%5D&theme=light&style=3&timezone=America%2FSao_Paulo&withdateranges=0&showpopupbutton=0&locale=br"
-        allowtransparency="true" scrolling="no" title="WTI chart"></iframe>
+      <div class="widget-wrap" id="w5"></div>
       <div class="card-why">Petrobras ≈15% do Ibov. Petróleo sobe = WIN sobe.</div>
     </div>
 
@@ -259,12 +189,41 @@
   </div>
 
 </div>
+
 <script>
+function createWidget(containerId, symbol, theme) {
+  var container = document.getElementById(containerId);
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
+  script.async = true;
+  script.innerHTML = JSON.stringify({
+    "symbol": symbol,
+    "width": "100%",
+    "height": 140,
+    "locale": "br",
+    "dateRange": "1D",
+    "colorTheme": theme,
+    "isTransparent": false,
+    "autosize": true,
+    "largeChartUrl": ""
+  });
+  container.appendChild(script);
+}
+
+var theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+createWidget('w1', 'CME_MINI:ES1!',  theme);
+createWidget('w2', 'CBOE:VIX',       theme);
+createWidget('w3', 'TVC:DXY',        theme);
+createWidget('w4', 'FX:USDBRL',      theme);
+createWidget('w5', 'NYMEX:CL1!',     theme);
+
 function tickClock() {
-  const t = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
-  const p = n => String(n).padStart(2, '0');
+  var t = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+  var p = function(n) { return String(n).padStart(2, '0'); };
   document.getElementById('clock').textContent =
-    `BRT ${p(t.getHours())}:${p(t.getMinutes())}:${p(t.getSeconds())}`;
+    'BRT ' + p(t.getHours()) + ':' + p(t.getMinutes()) + ':' + p(t.getSeconds());
 }
 tickClock();
 setInterval(tickClock, 1000);
