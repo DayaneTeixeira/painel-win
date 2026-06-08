@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Painel WIN — 5 Drivers</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
@@ -77,8 +80,6 @@
   }
   .sym  { font-size: 15px; font-weight: 500; }
   .name { font-size: 10px; color: var(--text3); margin-top: 2px; }
-
-  /* Price row */
   .price-row {
     display: flex; align-items: baseline; gap: 6px;
     padding: 6px 12px 2px;
@@ -95,39 +96,78 @@
   .chg-up  { color: var(--up); }
   .chg-dn  { color: var(--dn); }
   .chg-neu { color: var(--neu); }
-
-  /* Sparkline */
-  .spark-wrap {
-    padding: 4px 8px 6px; flex: 1;
-  }
+  .spark-wrap { padding: 4px 8px 6px; flex: 1; }
   .spark-wrap canvas { width: 100% !important; height: 70px !important; display: block; }
-
-  /* Loading / error */
-  .card-loader {
-    height: 90px; display: flex; align-items: center; justify-content: center;
-    font-size: 11px; color: var(--text3);
-  }
   .tv-link {
     display: block; text-align: right;
     font-size: 10px; color: var(--text3);
-    padding: 0 12px 6px; text-decoration: none;
-    opacity: 0.7;
+    padding: 0 12px 6px; text-decoration: none; opacity: 0.7;
   }
   .tv-link:hover { opacity: 1; }
-
   .card-why {
     padding: 7px 12px; font-size: 10px; color: var(--text3);
     line-height: 1.5; border-top: 0.5px solid var(--border);
     margin-top: auto;
   }
+
+  /* ── Signal box ── */
   .signal {
-    display: flex; align-items: flex-start; gap: 10px;
-    background: var(--bg); border: 0.5px solid var(--border);
-    border-radius: var(--radius-lg); padding: 12px 16px; margin-bottom: 8px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 8px;
+    overflow: hidden;
+    border: 0.5px solid var(--border);
+    background: var(--bg);
   }
-  .sdot { width: 9px; height: 9px; border-radius: 50%; background: var(--text3); flex-shrink: 0; margin-top: 3px; }
-  .stitle { font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 3px; }
-  .sdesc  { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .signal-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px 10px;
+  }
+  .signal-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+    transition: background 0.4s;
+  }
+  .signal-icon.fav  { background: #E1F5EE; }
+  .signal-icon.def  { background: #FCECEA; }
+  .signal-icon.neu  { background: var(--bg2); }
+  .signal-icon.load { background: var(--bg2); }
+  @media (prefers-color-scheme: dark) {
+    .signal-icon.fav { background: #04342C; }
+    .signal-icon.def { background: #4A1B0C; }
+  }
+  .signal-title {
+    font-size: 14px; font-weight: 600;
+    transition: color 0.4s;
+  }
+  .signal-title.fav  { color: #0F6E56; }
+  .signal-title.def  { color: #C0392B; }
+  .signal-title.neu  { color: var(--text2); }
+  .signal-title.load { color: var(--text3); }
+
+  .signal-summary {
+    font-size: 12px; color: var(--text2);
+    padding: 0 16px 12px; line-height: 1.6;
+  }
+
+  .signal-pills {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 0 16px 12px;
+  }
+  .pill {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 500;
+    padding: 3px 8px; border-radius: 20px;
+    border: 0.5px solid transparent;
+  }
+  .pill.ok  { background: #E1F5EE; color: #085041; border-color: #5DCAA5; }
+  .pill.bad { background: #FCECEA; color: #7B1E1E; border-color: #E07070; }
+  .pill.neu { background: var(--bg2); color: var(--text3); border-color: var(--border); }
+  @media (prefers-color-scheme: dark) {
+    .pill.ok  { background: #04342C; color: #5DCAA5; border-color: #0F6E56; }
+    .pill.bad { background: #4A1B0C; color: #F0997B; border-color: #C0392B; }
+  }
+
   .footer-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
   .clock { font-size: 11px; color: var(--text3); font-variant-numeric: tabular-nums; }
   .note  { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
@@ -154,15 +194,14 @@
 
   <div class="grid" id="grid"></div>
 
-  <div class="signal">
-    <div class="sdot"></div>
-    <div>
-      <div class="stitle">Como ler o sinal para o WIN</div>
-      <div class="sdesc">
-        Favorável: ES1! subindo + VIX abaixo de 20 + DXY caindo + USD/BRL caindo + WTI estável ou subindo.<br>
-        Desfavorável: ES1! caindo + VIX acima de 25 + DXY subindo + USD/BRL subindo.
-      </div>
+  <!-- Signal box -->
+  <div class="signal" id="signal-box">
+    <div class="signal-header">
+      <div class="signal-icon load" id="sig-icon">⏳</div>
+      <div class="signal-title load" id="sig-title">Carregando análise…</div>
     </div>
+    <div class="signal-summary" id="sig-summary">Aguardando dados dos 5 drivers.</div>
+    <div class="signal-pills" id="sig-pills"></div>
   </div>
 
   <div class="footer-row">
@@ -175,17 +214,15 @@
 
 </div>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>
 const INSTRUMENTS = [
-  { rank:'#1', sym:'ES1!',    name:'Futuro S&P 500',  tag:'EUA',       tagCls:'t-us', cardCls:'r1', yf:'ES=F',  tvSym:'CME_MINI:ES1!',  dp:2 },
-  { rank:'#2', sym:'VIX',     name:'Volatilidade S&P',tag:'EUA',       tagCls:'t-us', cardCls:'r2', yf:'%5EVIX',tvSym:'CBOE:VIX',       dp:2 },
-  { rank:'#3', sym:'DXY',     name:'Índice do dólar', tag:'Câmbio',    tagCls:'t-fx', cardCls:'r3', yf:'DX-Y.NYB',tvSym:'TVC:DXY',      dp:3 },
-  { rank:'#4', sym:'USD/BRL', name:'Dólar / Real',    tag:'Câmbio',    tagCls:'t-fx', cardCls:'r4', yf:'USDBRL=X',tvSym:'FX:USDBRL',    dp:4 },
-  { rank:'#5', sym:'WTI',     name:'Petróleo WTI',    tag:'Commodity', tagCls:'t-cm', cardCls:'r5', yf:'CL=F',  tvSym:'NYMEX:CL1!',     dp:2 },
+  { rank:'#1', sym:'ES1!',    name:'Futuro S&P 500',  tag:'EUA',       tagCls:'t-us', cardCls:'r1', yf:'ES=F',     tvSym:'CME_MINI:ES1!', dp:2 },
+  { rank:'#2', sym:'VIX',     name:'Volatilidade S&P',tag:'EUA',       tagCls:'t-us', cardCls:'r2', yf:'%5EVIX',   tvSym:'CBOE:VIX',      dp:2 },
+  { rank:'#3', sym:'DXY',     name:'Índice do dólar', tag:'Câmbio',    tagCls:'t-fx', cardCls:'r3', yf:'DX-Y.NYB', tvSym:'TVC:DXY',       dp:3 },
+  { rank:'#4', sym:'USD/BRL', name:'Dólar / Real',    tag:'Câmbio',    tagCls:'t-fx', cardCls:'r4', yf:'USDBRL=X', tvSym:'FX:USDBRL',     dp:4 },
+  { rank:'#5', sym:'WTI',     name:'Petróleo WTI',    tag:'Commodity', tagCls:'t-cm', cardCls:'r5', yf:'CL=F',     tvSym:'NYMEX:CL1!',    dp:2 },
 ];
-
 const WHY = [
   'Move o WIN overnight. Principal referência global.',
   'Acima de 25 = fuga de risco. Correlação inversa direta.',
@@ -194,10 +231,10 @@ const WHY = [
   'Petrobras ≈15% do Ibov. Petróleo sobe = WIN sobe.',
 ];
 
-const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const charts = {};
+// Store latest pct changes: [es_pct, vix_price, dxy_pct, usdbrl_pct, wti_pct]
+const latest = { es: null, vix: null, dxy: null, usdbrl: null, wti: null };
 
-// Build card HTML
 function buildGrid() {
   const grid = document.getElementById('grid');
   INSTRUMENTS.forEach((ins, i) => {
@@ -226,40 +263,23 @@ function buildGrid() {
       <div class="card-why">${WHY[i]}</div>
     `;
     grid.appendChild(card);
-
-    // init sparkline chart
     const ctx = document.getElementById(`spark-${i}`).getContext('2d');
-    const lineColor = ins.cardCls === 'r1' || ins.cardCls === 'r2' ? '#185FA5'
-                    : ins.cardCls === 'r5' ? '#0F6E56' : '#854F0B';
+    const lineColor = (ins.cardCls==='r1'||ins.cardCls==='r2') ? '#185FA5'
+                    : ins.cardCls==='r5' ? '#0F6E56' : '#854F0B';
     charts[i] = new Chart(ctx, {
       type: 'line',
-      data: {
-        labels: [],
-        datasets: [{
-          data: [],
-          borderColor: lineColor,
-          borderWidth: 1.5,
-          pointRadius: 0,
-          fill: true,
-          backgroundColor: lineColor + '18',
-          tension: 0.3,
-        }]
-      },
+      data: { labels: [], datasets: [{ data: [], borderColor: lineColor, borderWidth: 1.5,
+        pointRadius: 0, fill: true, backgroundColor: lineColor+'18', tension: 0.3 }] },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        responsive: true, maintainAspectRatio: false,
         plugins: { legend: { display: false }, tooltip: { enabled: false } },
-        scales: {
-          x: { display: false },
-          y: { display: false, grace: '5%' }
-        },
+        scales: { x: { display: false }, y: { display: false, grace: '5%' } },
         animation: { duration: 400 }
       }
     });
   });
 }
 
-// Fetch via Yahoo Finance proxy (allorigins)
 async function fetchQuote(yf) {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yf}?interval=5m&range=1d`;
   const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
@@ -273,43 +293,89 @@ function parseQuote(json) {
   const meta   = result.meta;
   const closes = result.indicators.quote[0].close;
   const timestamps = result.timestamp;
-
-  // Filter nulls
   const pts = closes.map((c, i) => ({ c, t: timestamps[i] })).filter(p => p.c != null);
-
   const price = meta.regularMarketPrice ?? pts[pts.length-1]?.c;
   const prev  = meta.chartPreviousClose ?? meta.previousClose;
   const chg   = price - prev;
   const pct   = (chg / prev) * 100;
-
   return { price, chg, pct, pts };
 }
 
 function updateCard(i, data, ins) {
-  // Price row
   const row = document.getElementById(`price-${i}`);
-  const valEl = row.querySelector('.price-val');
-  const chgEl = row.querySelector('.price-chg');
-
-  valEl.textContent = data.price.toFixed(ins.dp);
+  row.querySelector('.price-val').textContent = data.price.toFixed(ins.dp);
   const sign = data.chg >= 0 ? '+' : '';
+  const chgEl = row.querySelector('.price-chg');
   chgEl.textContent = `${sign}${data.chg.toFixed(ins.dp)} (${sign}${data.pct.toFixed(2)}%)`;
   chgEl.className = 'price-chg ' + (data.chg > 0 ? 'chg-up' : data.chg < 0 ? 'chg-dn' : 'chg-neu');
-
-  // Sparkline
   const ch = charts[i];
-  ch.data.labels  = data.pts.map(p => p.t);
+  ch.data.labels = data.pts.map(p => p.t);
   ch.data.datasets[0].data = data.pts.map(p => p.c);
   ch.update('none');
 }
 
+// ── Signal analysis ──────────────────────────────────────────────
+function analyzeSignal() {
+  const { es, vix, dxy, usdbrl, wti } = latest;
+  if ([es, vix, dxy, usdbrl, wti].some(v => v === null)) return;
+
+  // Individual conditions (true = favorable for WIN)
+  const c = {
+    es:     { ok: es.pct > 0,       label: 'ES1!',    val: `${es.pct > 0 ? '+' : ''}${es.pct.toFixed(2)}%`,     desc: es.pct > 0 ? 'subindo ✓' : 'caindo ✗' },
+    vix:    { ok: vix.pct < 0,      label: 'VIX',     val: `${vix.pct > 0 ? '+' : ''}${vix.pct.toFixed(2)}%`,  desc: vix.pct < 0 ? 'caindo ✓' : 'subindo ✗' },
+    dxy:    { ok: dxy.pct < 0,      label: 'DXY',     val: `${dxy.pct > 0 ? '+' : ''}${dxy.pct.toFixed(2)}%`,  desc: dxy.pct < 0 ? 'caindo ✓' : 'subindo ✗' },
+    usdbrl: { ok: usdbrl.pct < 0,   label: 'USD/BRL', val: `${usdbrl.pct > 0 ? '+' : ''}${usdbrl.pct.toFixed(2)}%`, desc: usdbrl.pct < 0 ? 'caindo ✓' : 'subindo ✗' },
+    wti:    { ok: wti.pct >= -0.5,  label: 'WTI',     val: `${wti.pct > 0 ? '+' : ''}${wti.pct.toFixed(2)}%`,  desc: wti.pct >= -0.5 ? 'estável/subindo ✓' : 'caindo ✗' },
+  };
+
+  const score = Object.values(c).filter(x => x.ok).length;
+
+  let cls, icon, title, summary;
+  if (score >= 4) {
+    cls = 'fav'; icon = '🟢';
+    title = 'Ambiente FAVORÁVEL ao WIN';
+    summary = `${score} de 5 drivers alinhados para alta. Cenário de baixo risco sistêmico com fluxo positivo para o Ibovespa.`;
+  } else if (score >= 3) {
+    cls = 'neu'; icon = '🟡';
+    title = 'Ambiente NEUTRO / Misto';
+    summary = `${score} de 5 drivers favoráveis. Sem viés claro — mercado pode oscilar em qualquer direção.`;
+  } else {
+    cls = 'def'; icon = '🔴';
+    title = 'Ambiente DESFAVORÁVEL ao WIN';
+    summary = `Apenas ${score} de 5 drivers favoráveis. Pressão vendedora predomina — cautela na entrada comprada.`;
+  }
+
+  // Render
+  const iconEl  = document.getElementById('sig-icon');
+  const titleEl = document.getElementById('sig-title');
+  const sumEl   = document.getElementById('sig-summary');
+  const pillsEl = document.getElementById('sig-pills');
+
+  iconEl.className  = `signal-icon ${cls}`;
+  iconEl.textContent = icon;
+  titleEl.className  = `signal-title ${cls}`;
+  titleEl.textContent = title;
+  sumEl.textContent  = summary;
+
+  pillsEl.innerHTML = '';
+  Object.values(c).forEach(item => {
+    const pillCls = item.ok ? 'ok' : 'bad';
+    const pill = document.createElement('span');
+    pill.className = `pill ${pillCls}`;
+    pill.textContent = `${item.label} ${item.val} — ${item.desc}`;
+    pillsEl.appendChild(pill);
+  });
+}
+
 async function refreshAll() {
+  const keys = ['es','vix','dxy','usdbrl','wti'];
   for (let i = 0; i < INSTRUMENTS.length; i++) {
     const ins = INSTRUMENTS[i];
     try {
       const json = await fetchQuote(ins.yf);
       const data = parseQuote(json);
       updateCard(i, data, ins);
+      latest[keys[i]] = data;
     } catch(e) {
       console.warn(ins.sym, e);
       const row = document.getElementById(`price-${i}`);
@@ -317,9 +383,9 @@ async function refreshAll() {
       row.querySelector('.price-chg').textContent = 'erro';
     }
   }
+  analyzeSignal();
 }
 
-// Clock
 function tickClock() {
   const t = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
   const p = n => String(n).padStart(2,'0');
