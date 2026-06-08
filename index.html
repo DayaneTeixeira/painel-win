@@ -250,12 +250,12 @@
 const INSTRUMENTS = [
   { rank:'#1', sym:'ES1!',    name:'Futuro S&P 500',   tag:'EUA',     tagCls:'t-us', cardCls:'r1', yf:'ES=F',     tvSym:'CME_MINI:ES1!',  dp:2 },
   { rank:'#2', sym:'VIX',     name:'Volatilidade S&P', tag:'EUA',     tagCls:'t-us', cardCls:'r2', yf:'%5EVIX',   tvSym:'CBOE:VIX',       dp:2 },
-  { rank:'#3', sym:'DXY',     name:'Índice do dólar',  tag:'Câmbio',  tagCls:'t-fx', cardCls:'r3', yf:'DX-Y.NYB', tvSym:'TVC:DXY',        dp:3 },
-  { rank:'#4', sym:'USD/BRL', name:'Dólar / Real',     tag:'Câmbio',  tagCls:'t-fx', cardCls:'r4', yf:'USDBRL=X', tvSym:'FX:USDBRL',      dp:4 },
+  { rank:'#3', sym:'DXY',     name:'Índice do dólar',  tag:'Câmbio',  tagCls:'t-fx', cardCls:'r3', yf:'DX=F',     tvSym:'TVC:DXY',        dp:3 },
+  { rank:'#4', sym:'USD/BRL', name:'Dólar / Real',     tag:'Câmbio',  tagCls:'t-fx', cardCls:'r4', yf:'BRL%3DX',  tvSym:'FX:USDBRL',      dp:4 },
   { rank:'#5', sym:'WTI',     name:'Petróleo WTI',     tag:'Cmdty',   tagCls:'t-cm', cardCls:'r5', yf:'CL=F',     tvSym:'NYMEX:CL1!',     dp:2 },
   { rank:'#6', sym:'NQ1!',    name:'Futuro Nasdaq 100',tag:'EUA',     tagCls:'t-us', cardCls:'r6', yf:'NQ=F',     tvSym:'CME_MINI:NQ1!',  dp:2 },
   { rank:'#7', sym:'SPX',     name:'S&P 500 à vista',  tag:'EUA',     tagCls:'t-us', cardCls:'r7', yf:'%5EGSPC',  tvSym:'SP:SPX',         dp:2 },
-  { rank:'#8', sym:'BR10Y',   name:'Juro 10a Brasil',  tag:'Brasil',  tagCls:'t-br', cardCls:'r8', yf:'BRL=X',    tvSym:'TVC:BR10Y',      dp:4 },
+  { rank:'#8', sym:'BR10Y',   name:'Juro 10a Brasil',  tag:'Brasil',  tagCls:'t-br', cardCls:'r8', yf:'BR10Y=RR',  tvSym:'TVC:BR10Y',      dp:3 },
   { rank:'#9', sym:'US10Y',   name:'Treasury 10a EUA', tag:'Juros',   tagCls:'t-br', cardCls:'r9', yf:'%5ETNX',   tvSym:'TVC:US10Y',      dp:3 },
   { rank:'#10',sym:'EWZ',     name:'ETF Brasil (NYSE)',tag:'ETF',     tagCls:'t-et', cardCls:'r10',yf:'EWZ',      tvSym:'AMEX:EWZ',       dp:2 },
 ];
@@ -323,12 +323,28 @@ function buildGrid() {
   });
 }
 
+const PROXIES = [
+  url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+];
+
 async function fetchQuote(yf) {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yf}?interval=5m&range=1d`;
-  const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-  const r = await fetch(proxy);
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  return r.json();
+  const urls = [
+    `https://query1.finance.yahoo.com/v8/finance/chart/${yf}?interval=5m&range=1d`,
+    `https://query2.finance.yahoo.com/v8/finance/chart/${yf}?interval=5m&range=1d`,
+  ];
+  for (const baseUrl of urls) {
+    for (const makeProxy of PROXIES) {
+      try {
+        const r = await fetch(makeProxy(baseUrl), { signal: AbortSignal.timeout(7000) });
+        if (!r.ok) continue;
+        const json = await r.json();
+        if (json?.chart?.result?.[0]) return json;
+      } catch(e) { continue; }
+    }
+  }
+  throw new Error('Todos os proxies falharam para ' + yf);
 }
 
 function parseQuote(json) {
@@ -359,47 +375,42 @@ function updateCard(i, data, ins) {
 
 function analyzeSignal() {
   const { es, vix, dxy, usdbrl, wti, nq, spx, br10y, us10y, ewz } = latest;
-  if ([es, vix, dxy, usdbrl, wti, nq, spx, br10y, us10y, ewz].some(v => v === null)) return;
+  const loaded = [es, vix, dxy, usdbrl, wti, nq, spx, br10y, us10y, ewz].filter(v => v !== null);
+  if (loaded.length === 0) return;
 
-  // EWZ: verificar se mercado americano está aberto (10h30–18h00 BRT)
   const brt = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
   const brtMin = brt.getHours() * 60 + brt.getMinutes();
-  const ewzOpen = brtMin >= 630 && brtMin < 1080; // 10h30 a 18h00
+  const ewzOpen = brtMin >= 630 && brtMin < 1080;
 
   const drivers = [
-    { label:'ES1!',    val:`${es.pct>=0?'+':''}${es.pct.toFixed(2)}%`,     ok: es.pct > 0,        desc: es.pct > 0 ? 'S&P subindo' : 'S&P caindo' },
-    { label:'VIX',     val:`${vix.pct>=0?'+':''}${vix.pct.toFixed(2)}%`,   ok: vix.pct < 0,       desc: vix.pct < 0 ? 'Vol. caindo' : 'Vol. subindo' },
-    { label:'DXY',     val:`${dxy.pct>=0?'+':''}${dxy.pct.toFixed(2)}%`,   ok: dxy.pct < 0,       desc: dxy.pct < 0 ? 'USD global ↓' : 'USD global ↑' },
-    { label:'USD/BRL', val:`${usdbrl.pct>=0?'+':''}${usdbrl.pct.toFixed(2)}%`, ok: usdbrl.pct < 0, desc: usdbrl.pct < 0 ? 'Dólar/Real ↓' : 'Dólar/Real ↑' },
-    { label:'WTI',     val:`${wti.pct>=0?'+':''}${wti.pct.toFixed(2)}%`,   ok: wti.pct >= -0.5,   desc: wti.pct >= -0.5 ? 'Petróleo estável' : 'Petróleo caindo' },
-    { label:'NQ1!',    val:`${nq.pct>=0?'+':''}${nq.pct.toFixed(2)}%`,     ok: nq.pct > 0,        desc: nq.pct > 0 ? 'Nasdaq subindo' : 'Nasdaq caindo' },
-    { label:'SPX',     val:`${spx.pct>=0?'+':''}${spx.pct.toFixed(2)}%`,   ok: spx.pct > 0,       desc: spx.pct > 0 ? 'SPX subindo' : 'SPX caindo' },
-    { label:'BR10Y',   val:`${br10y.pct>=0?'+':''}${br10y.pct.toFixed(2)}%`, ok: br10y.pct <= 0,  desc: br10y.pct <= 0 ? 'Juro BR estável' : 'Juro BR subindo' },
-    { label:'US10Y',   val:`${us10y.pct>=0?'+':''}${us10y.pct.toFixed(2)}%`, ok: us10y.pct < 0,   desc: us10y.pct < 0 ? 'Treasury ↓' : 'Treasury ↑' },
-    { label:'EWZ',     val: ewzOpen ? `${ewz.pct>=0?'+':''}${ewz.pct.toFixed(2)}%` : '—',
-                       ok: ewzOpen ? ewz.pct > 0 : null,
-                       desc: !ewzOpen ? 'Fechado (abre 10h30)' : ewz.pct > 0 ? 'Fluxo gringo +' : 'Fluxo gringo −',
-                       inactive: !ewzOpen },
-  ];
+    es    && { label:'ES1!',    val:`${es.pct>=0?'+':''}${es.pct.toFixed(2)}%`,       ok: es.pct > 0,         desc: es.pct > 0 ? 'S&P subindo' : 'S&P caindo' },
+    vix   && { label:'VIX',     val:`${vix.pct>=0?'+':''}${vix.pct.toFixed(2)}%`,     ok: vix.pct < 0,        desc: vix.pct < 0 ? 'Vol. caindo' : 'Vol. subindo' },
+    dxy   && { label:'DXY',     val:`${dxy.pct>=0?'+':''}${dxy.pct.toFixed(2)}%`,     ok: dxy.pct < 0,        desc: dxy.pct < 0 ? 'USD global ↓' : 'USD global ↑' },
+    usdbrl && { label:'USD/BRL', val:`${usdbrl.pct>=0?'+':''}${usdbrl.pct.toFixed(2)}%`, ok: usdbrl.pct < 0,  desc: usdbrl.pct < 0 ? 'Dólar/Real ↓' : 'Dólar/Real ↑' },
+    wti   && { label:'WTI',     val:`${wti.pct>=0?'+':''}${wti.pct.toFixed(2)}%`,     ok: wti.pct >= -0.5,    desc: wti.pct >= -0.5 ? 'Petróleo estável' : 'Petróleo caindo' },
+    nq    && { label:'NQ1!',    val:`${nq.pct>=0?'+':''}${nq.pct.toFixed(2)}%`,       ok: nq.pct > 0,         desc: nq.pct > 0 ? 'Nasdaq subindo' : 'Nasdaq caindo' },
+    spx   && { label:'SPX',     val:`${spx.pct>=0?'+':''}${spx.pct.toFixed(2)}%`,     ok: spx.pct > 0,        desc: spx.pct > 0 ? 'SPX subindo' : 'SPX caindo' },
+    br10y && { label:'BR10Y',   val:`${br10y.pct>=0?'+':''}${br10y.pct.toFixed(2)}%`, ok: br10y.pct <= 0,     desc: br10y.pct <= 0 ? 'Juro BR estável' : 'Juro BR subindo' },
+    us10y && { label:'US10Y',   val:`${us10y.pct>=0?'+':''}${us10y.pct.toFixed(2)}%`, ok: us10y.pct < 0,      desc: us10y.pct < 0 ? 'Treasury ↓' : 'Treasury ↑' },
+    ewz   && { label:'EWZ',     val: ewzOpen ? `${ewz.pct>=0?'+':''}${ewz.pct.toFixed(2)}%` : '—',
+                                ok: ewzOpen ? ewz.pct > 0 : null,
+                                desc: !ewzOpen ? 'Fechado (abre 10h30)' : ewz.pct > 0 ? 'Fluxo gringo +' : 'Fluxo gringo −',
+                                inactive: !ewzOpen },
+  ].filter(Boolean);
 
-  const active  = drivers.filter(d => d.inactive !== true);
+  const active  = drivers.filter(d => !d.inactive);
   const bullish = drivers.filter(d => d.ok === true);
   const bearish = drivers.filter(d => d.ok === false);
   const score   = bullish.length;
   const total   = active.length;
 
   let vIcon, vCls, vText, vSub;
-  const thresh4 = Math.round(total * 0.8);
-  const thresh3 = Math.round(total * 0.5);
-  if (score >= thresh4) {
-    vIcon = '🟢'; vCls = 'fav';
-    vText = 'Ambiente FAVORÁVEL à alta do WIN';
-  } else if (score >= thresh3) {
-    vIcon = '🟡'; vCls = 'neu';
-    vText = 'Ambiente NEUTRO — sem viés claro';
+  if (score >= Math.ceil(total * 0.8)) {
+    vIcon = '🟢'; vCls = 'fav'; vText = 'Ambiente FAVORÁVEL à alta do WIN';
+  } else if (score >= Math.ceil(total * 0.5)) {
+    vIcon = '🟡'; vCls = 'neu'; vText = 'Ambiente NEUTRO — sem viés claro';
   } else {
-    vIcon = '🔴'; vCls = 'def';
-    vText = 'Ambiente DESFAVORÁVEL — pressão vendedora';
+    vIcon = '🔴'; vCls = 'def'; vText = 'Ambiente DESFAVORÁVEL — pressão vendedora';
   }
   vSub = `${score}/${total} drivers alinhados`;
 
@@ -452,7 +463,7 @@ async function refreshAll() {
       console.warn(ins.sym, res.reason);
       const row = document.getElementById(`price-${i}`);
       row.querySelector('.price-val').textContent = '—';
-      row.querySelector('.price-chg').textContent = 'erro';
+      row.querySelector('.price-chg').textContent = 'sem dado';
     }
   });
   analyzeSignal();
