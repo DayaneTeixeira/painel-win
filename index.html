@@ -432,20 +432,29 @@ function analyzeSignal() {
 
 async function refreshAll() {
   const keys = ['es','vix','dxy','usdbrl','wti','nq','spx','br10y','us10y','ewz'];
-  for (let i = 0; i < INSTRUMENTS.length; i++) {
+  const results = await Promise.allSettled(
+    INSTRUMENTS.map(ins => fetchQuote(ins.yf))
+  );
+  results.forEach((res, i) => {
     const ins = INSTRUMENTS[i];
-    try {
-      const json = await fetchQuote(ins.yf);
-      const data = parseQuote(json);
-      updateCard(i, data, ins);
-      latest[keys[i]] = data;
-    } catch(e) {
-      console.warn(ins.sym, e);
+    if (res.status === 'fulfilled') {
+      try {
+        const data = parseQuote(res.value);
+        updateCard(i, data, ins);
+        latest[keys[i]] = data;
+      } catch(e) {
+        console.warn(ins.sym, 'parse error', e);
+        const row = document.getElementById(`price-${i}`);
+        row.querySelector('.price-val').textContent = '—';
+        row.querySelector('.price-chg').textContent = 'erro';
+      }
+    } else {
+      console.warn(ins.sym, res.reason);
       const row = document.getElementById(`price-${i}`);
       row.querySelector('.price-val').textContent = '—';
       row.querySelector('.price-chg').textContent = 'erro';
     }
-  }
+  });
   analyzeSignal();
 }
 
