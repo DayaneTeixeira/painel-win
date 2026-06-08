@@ -75,6 +75,9 @@
   .card.r1,.card.r2 { border-top: 2px solid #3b82f6; }
   .card.r3,.card.r4 { border-top: 2px solid #f59e0b; }
   .card.r5           { border-top: 2px solid #22d3a0; }
+  .card.r6,.card.r7 { border-top: 2px solid #a78bfa; }
+  .card.r8,.card.r9 { border-top: 2px solid #38bdf8; }
+  .card.r10          { border-top: 2px solid #fb923c; }
   .card-top { padding: 10px 12px 7px; }
   .rank-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
   .rank { font-size: 10px; color: var(--text3); font-weight: 500; }
@@ -82,6 +85,8 @@
   .t-us { background: rgba(59,130,246,0.15); color: #93c5fd; border: 0.5px solid rgba(59,130,246,0.3); }
   .t-fx { background: rgba(245,158,11,0.12); color: #fcd34d; border: 0.5px solid rgba(245,158,11,0.3); }
   .t-cm { background: rgba(248,113,113,0.12); color: #fca5a5; border: 0.5px solid rgba(248,113,113,0.3); }
+  .t-br { background: rgba(167,139,250,0.12); color: #c4b5fd; border: 0.5px solid rgba(167,139,250,0.3); }
+  .t-et { background: rgba(251,146,60,0.12);  color: #fdba74; border: 0.5px solid rgba(251,146,60,0.3); }
   .sym  { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: 0.2px; }
   .name { font-size: 10px; color: var(--text3); margin-top: 2px; }
   .price-row {
@@ -186,8 +191,8 @@
     <div class="topbar-left">
       <div class="logo">B3</div>
       <div>
-        <div class="ttl">Painel WIN — 5 drivers principais</div>
-        <div class="sub">Correlação mais alta com o mini-índice Ibovespa</div>
+        <div class="ttl">Painel WIN — 10 drivers principais</div>
+        <div class="sub">Correlação com o mini-índice Ibovespa · day trade</div>
       </div>
     </div>
     <div class="badge">
@@ -243,11 +248,16 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>
 const INSTRUMENTS = [
-  { rank:'#1', sym:'ES1!',    name:'Futuro S&P 500',  tag:'EUA',       tagCls:'t-us', cardCls:'r1', yf:'ES=F',     tvSym:'CME_MINI:ES1!', dp:2 },
-  { rank:'#2', sym:'VIX',     name:'Volatilidade S&P',tag:'EUA',       tagCls:'t-us', cardCls:'r2', yf:'%5EVIX',   tvSym:'CBOE:VIX',      dp:2 },
-  { rank:'#3', sym:'DXY',     name:'Índice do dólar', tag:'Câmbio',    tagCls:'t-fx', cardCls:'r3', yf:'DX-Y.NYB', tvSym:'TVC:DXY',       dp:3 },
-  { rank:'#4', sym:'USD/BRL', name:'Dólar / Real',    tag:'Câmbio',    tagCls:'t-fx', cardCls:'r4', yf:'USDBRL=X', tvSym:'FX:USDBRL',     dp:4 },
-  { rank:'#5', sym:'WTI',     name:'Petróleo WTI',    tag:'Commodity', tagCls:'t-cm', cardCls:'r5', yf:'CL=F',     tvSym:'NYMEX:CL1!',    dp:2 },
+  { rank:'#1', sym:'ES1!',    name:'Futuro S&P 500',   tag:'EUA',     tagCls:'t-us', cardCls:'r1', yf:'ES=F',     tvSym:'CME_MINI:ES1!',  dp:2 },
+  { rank:'#2', sym:'VIX',     name:'Volatilidade S&P', tag:'EUA',     tagCls:'t-us', cardCls:'r2', yf:'%5EVIX',   tvSym:'CBOE:VIX',       dp:2 },
+  { rank:'#3', sym:'DXY',     name:'Índice do dólar',  tag:'Câmbio',  tagCls:'t-fx', cardCls:'r3', yf:'DX-Y.NYB', tvSym:'TVC:DXY',        dp:3 },
+  { rank:'#4', sym:'USD/BRL', name:'Dólar / Real',     tag:'Câmbio',  tagCls:'t-fx', cardCls:'r4', yf:'USDBRL=X', tvSym:'FX:USDBRL',      dp:4 },
+  { rank:'#5', sym:'WTI',     name:'Petróleo WTI',     tag:'Cmdty',   tagCls:'t-cm', cardCls:'r5', yf:'CL=F',     tvSym:'NYMEX:CL1!',     dp:2 },
+  { rank:'#6', sym:'NQ1!',    name:'Futuro Nasdaq 100',tag:'EUA',     tagCls:'t-us', cardCls:'r6', yf:'NQ=F',     tvSym:'CME_MINI:NQ1!',  dp:2 },
+  { rank:'#7', sym:'SPX',     name:'S&P 500 à vista',  tag:'EUA',     tagCls:'t-us', cardCls:'r7', yf:'%5EGSPC',  tvSym:'SP:SPX',         dp:2 },
+  { rank:'#8', sym:'BR10Y',   name:'Juro 10a Brasil',  tag:'Brasil',  tagCls:'t-br', cardCls:'r8', yf:'BRL=X',    tvSym:'TVC:BR10Y',      dp:4 },
+  { rank:'#9', sym:'US10Y',   name:'Treasury 10a EUA', tag:'Juros',   tagCls:'t-br', cardCls:'r9', yf:'%5ETNX',   tvSym:'TVC:US10Y',      dp:3 },
+  { rank:'#10',sym:'EWZ',     name:'ETF Brasil (NYSE)',tag:'ETF',     tagCls:'t-et', cardCls:'r10',yf:'EWZ',      tvSym:'AMEX:EWZ',       dp:2 },
 ];
 const WHY = [
   'Move o WIN overnight. Principal referência global.',
@@ -255,10 +265,15 @@ const WHY = [
   'Dólar forte drena emergentes. Pesa no WIN via fluxo.',
   'Câmbio local. Alta do dólar pressiona o Ibovespa.',
   'Petrobras ≈15% do Ibov. Petróleo sobe = WIN sobe.',
+  'Lidera o ES intraday. NQ forte = apetite por risco.',
+  'Spot vs futuro. Divergência ES×SPX = pressão de curto prazo.',
+  'Juro longo BR sobe = custo de capital sobe = WIN cai.',
+  'Treasury sobe = dólar global sobe = emergentes sangram.',
+  'Fluxo gringo em tempo real. Abre 10h30 BRT. Proxy direto do Ibov.',
 ];
 
 const charts = {};
-const latest = { es: null, vix: null, dxy: null, usdbrl: null, wti: null };
+const latest = { es: null, vix: null, dxy: null, usdbrl: null, wti: null, nq: null, spx: null, br10y: null, us10y: null, ewz: null };
 
 function buildGrid() {
   const grid = document.getElementById('grid');
@@ -288,8 +303,12 @@ function buildGrid() {
     `;
     grid.appendChild(card);
     const ctx = document.getElementById(`spark-${i}`).getContext('2d');
-    const lineColor = (ins.cardCls==='r1'||ins.cardCls==='r2') ? '#185FA5'
-                    : ins.cardCls==='r5' ? '#0F6E56' : '#854F0B';
+    const lineColor = (ins.cardCls==='r1'||ins.cardCls==='r2') ? '#3b82f6'
+                    : (ins.cardCls==='r3'||ins.cardCls==='r4') ? '#f59e0b'
+                    : ins.cardCls==='r5' ? '#22d3a0'
+                    : (ins.cardCls==='r6'||ins.cardCls==='r7') ? '#a78bfa'
+                    : (ins.cardCls==='r8'||ins.cardCls==='r9') ? '#38bdf8'
+                    : '#fb923c';
     charts[i] = new Chart(ctx, {
       type: 'line',
       data: { labels: [], datasets: [{ data: [], borderColor: lineColor, borderWidth: 1.5,
@@ -339,61 +358,50 @@ function updateCard(i, data, ins) {
 }
 
 function analyzeSignal() {
-  const { es, vix, dxy, usdbrl, wti } = latest;
-  if ([es, vix, dxy, usdbrl, wti].some(v => v === null)) return;
+  const { es, vix, dxy, usdbrl, wti, nq, spx, br10y, us10y, ewz } = latest;
+  if ([es, vix, dxy, usdbrl, wti, nq, spx, br10y, us10y, ewz].some(v => v === null)) return;
+
+  // EWZ: verificar se mercado americano está aberto (10h30–18h00 BRT)
+  const brt = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+  const brtMin = brt.getHours() * 60 + brt.getMinutes();
+  const ewzOpen = brtMin >= 630 && brtMin < 1080; // 10h30 a 18h00
 
   const drivers = [
-    {
-      label: 'ES1!',
-      val: `${es.pct >= 0 ? '+' : ''}${es.pct.toFixed(2)}%`,
-      ok: es.pct > 0,
-      desc: es.pct > 0 ? 'S&P subindo' : 'S&P caindo'
-    },
-    {
-      label: 'VIX',
-      val: `${vix.pct >= 0 ? '+' : ''}${vix.pct.toFixed(2)}%`,
-      ok: vix.pct < 0,
-      desc: vix.pct < 0 ? 'Volatilidade caindo' : 'Volatilidade subindo'
-    },
-    {
-      label: 'DXY',
-      val: `${dxy.pct >= 0 ? '+' : ''}${dxy.pct.toFixed(2)}%`,
-      ok: dxy.pct < 0,
-      desc: dxy.pct < 0 ? 'Dólar global caindo' : 'Dólar global subindo'
-    },
-    {
-      label: 'USD/BRL',
-      val: `${usdbrl.pct >= 0 ? '+' : ''}${usdbrl.pct.toFixed(2)}%`,
-      ok: usdbrl.pct < 0,
-      desc: usdbrl.pct < 0 ? 'Dólar/Real caindo' : 'Dólar/Real subindo'
-    },
-    {
-      label: 'WTI',
-      val: `${wti.pct >= 0 ? '+' : ''}${wti.pct.toFixed(2)}%`,
-      ok: wti.pct >= -0.5,
-      desc: wti.pct >= -0.5 ? 'Petróleo estável/subindo' : 'Petróleo caindo'
-    },
+    { label:'ES1!',    val:`${es.pct>=0?'+':''}${es.pct.toFixed(2)}%`,     ok: es.pct > 0,        desc: es.pct > 0 ? 'S&P subindo' : 'S&P caindo' },
+    { label:'VIX',     val:`${vix.pct>=0?'+':''}${vix.pct.toFixed(2)}%`,   ok: vix.pct < 0,       desc: vix.pct < 0 ? 'Vol. caindo' : 'Vol. subindo' },
+    { label:'DXY',     val:`${dxy.pct>=0?'+':''}${dxy.pct.toFixed(2)}%`,   ok: dxy.pct < 0,       desc: dxy.pct < 0 ? 'USD global ↓' : 'USD global ↑' },
+    { label:'USD/BRL', val:`${usdbrl.pct>=0?'+':''}${usdbrl.pct.toFixed(2)}%`, ok: usdbrl.pct < 0, desc: usdbrl.pct < 0 ? 'Dólar/Real ↓' : 'Dólar/Real ↑' },
+    { label:'WTI',     val:`${wti.pct>=0?'+':''}${wti.pct.toFixed(2)}%`,   ok: wti.pct >= -0.5,   desc: wti.pct >= -0.5 ? 'Petróleo estável' : 'Petróleo caindo' },
+    { label:'NQ1!',    val:`${nq.pct>=0?'+':''}${nq.pct.toFixed(2)}%`,     ok: nq.pct > 0,        desc: nq.pct > 0 ? 'Nasdaq subindo' : 'Nasdaq caindo' },
+    { label:'SPX',     val:`${spx.pct>=0?'+':''}${spx.pct.toFixed(2)}%`,   ok: spx.pct > 0,       desc: spx.pct > 0 ? 'SPX subindo' : 'SPX caindo' },
+    { label:'BR10Y',   val:`${br10y.pct>=0?'+':''}${br10y.pct.toFixed(2)}%`, ok: br10y.pct <= 0,  desc: br10y.pct <= 0 ? 'Juro BR estável' : 'Juro BR subindo' },
+    { label:'US10Y',   val:`${us10y.pct>=0?'+':''}${us10y.pct.toFixed(2)}%`, ok: us10y.pct < 0,   desc: us10y.pct < 0 ? 'Treasury ↓' : 'Treasury ↑' },
+    { label:'EWZ',     val: ewzOpen ? `${ewz.pct>=0?'+':''}${ewz.pct.toFixed(2)}%` : '—',
+                       ok: ewzOpen ? ewz.pct > 0 : null,
+                       desc: !ewzOpen ? 'Fechado (abre 10h30)' : ewz.pct > 0 ? 'Fluxo gringo +' : 'Fluxo gringo −',
+                       inactive: !ewzOpen },
   ];
 
-  const bullish = drivers.filter(d => d.ok);
-  const bearish = drivers.filter(d => !d.ok);
+  const active  = drivers.filter(d => d.inactive !== true);
+  const bullish = drivers.filter(d => d.ok === true);
+  const bearish = drivers.filter(d => d.ok === false);
   const score   = bullish.length;
+  const total   = active.length;
 
-  // Verdict
   let vIcon, vCls, vText, vSub;
-  if (score >= 4) {
+  const thresh4 = Math.round(total * 0.8);
+  const thresh3 = Math.round(total * 0.5);
+  if (score >= thresh4) {
     vIcon = '🟢'; vCls = 'fav';
     vText = 'Ambiente FAVORÁVEL à alta do WIN';
-    vSub  = `${score}/5 drivers alinhados`;
-  } else if (score === 3) {
+  } else if (score >= thresh3) {
     vIcon = '🟡'; vCls = 'neu';
     vText = 'Ambiente NEUTRO — sem viés claro';
-    vSub  = `${score}/5 drivers alinhados`;
   } else {
     vIcon = '🔴'; vCls = 'def';
     vText = 'Ambiente DESFAVORÁVEL — pressão vendedora';
-    vSub  = `${score}/5 drivers alinhados`;
   }
+  vSub = `${score}/${total} drivers alinhados`;
 
   document.querySelector('.verdict-icon').textContent = vIcon;
   const vtEl = document.getElementById('verdict-text');
@@ -401,7 +409,6 @@ function analyzeSignal() {
   vtEl.className = `verdict-text ${vCls}`;
   document.getElementById('verdict-sub').textContent = vSub;
 
-  // Pills helper
   function renderPills(containerId, countId, items, pillCls) {
     const el = document.getElementById(containerId);
     const ct = document.getElementById(countId);
@@ -424,7 +431,7 @@ function analyzeSignal() {
 }
 
 async function refreshAll() {
-  const keys = ['es','vix','dxy','usdbrl','wti'];
+  const keys = ['es','vix','dxy','usdbrl','wti','nq','spx','br10y','us10y','ewz'];
   for (let i = 0; i < INSTRUMENTS.length; i++) {
     const ins = INSTRUMENTS[i];
     try {
