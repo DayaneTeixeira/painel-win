@@ -86,89 +86,101 @@
   }
   .price-val {
     font-size: 18px; font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    color: var(--text);
+    font-variant-numeric: tabular-nums; color: var(--text);
   }
-  .price-chg {
-    font-size: 11px; font-weight: 500;
-    font-variant-numeric: tabular-nums;
-  }
+  .price-chg { font-size: 11px; font-weight: 500; font-variant-numeric: tabular-nums; }
   .chg-up  { color: var(--up); }
   .chg-dn  { color: var(--dn); }
   .chg-neu { color: var(--neu); }
   .spark-wrap { padding: 4px 8px 6px; flex: 1; }
   .spark-wrap canvas { width: 100% !important; height: 70px !important; display: block; }
   .tv-link {
-    display: block; text-align: right;
-    font-size: 10px; color: var(--text3);
+    display: block; text-align: right; font-size: 10px; color: var(--text3);
     padding: 0 12px 6px; text-decoration: none; opacity: 0.7;
   }
   .tv-link:hover { opacity: 1; }
   .card-why {
     padding: 7px 12px; font-size: 10px; color: var(--text3);
-    line-height: 1.5; border-top: 0.5px solid var(--border);
-    margin-top: auto;
+    line-height: 1.5; border-top: 0.5px solid var(--border); margin-top: auto;
   }
 
-  /* ── Signal box ── */
-  .signal {
-    border-radius: var(--radius-lg);
+  /* ── Two-panel signal ── */
+  .signal-wrap {
     margin-bottom: 8px;
-    overflow: hidden;
-    border: 0.5px solid var(--border);
-    background: var(--bg);
   }
-  .signal-header {
+
+  /* Verdict bar */
+  .verdict {
     display: flex; align-items: center; gap: 10px;
-    padding: 12px 16px 10px;
+    background: var(--bg); border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 11px 16px;
+    margin-bottom: 8px;
   }
-  .signal-icon {
-    width: 32px; height: 32px; border-radius: 8px;
+  .verdict-icon { font-size: 18px; flex-shrink: 0; }
+  .verdict-text { font-size: 13px; font-weight: 600; }
+  .verdict-text.fav  { color: #0F6E56; }
+  .verdict-text.def  { color: #C0392B; }
+  .verdict-text.neu  { color: var(--text2); }
+  .verdict-text.load { color: var(--text3); }
+  .verdict-sub { font-size: 11px; color: var(--text3); margin-left: auto; }
+
+  /* Two columns */
+  .signal-panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  @media (max-width: 500px) {
+    .signal-panels { grid-template-columns: 1fr; }
+  }
+
+  .signal-panel {
+    background: var(--bg); border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+  }
+  .signal-panel.panel-up { border-top: 3px solid #0F6E56; }
+  .signal-panel.panel-dn { border-top: 3px solid #C0392B; }
+
+  .panel-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .panel-label { font-size: 12px; font-weight: 600; flex: 1; }
+  .panel-up .panel-label { color: #0F6E56; }
+  .panel-dn .panel-label { color: #C0392B; }
+  .panel-count {
+    font-size: 11px; font-weight: 700;
+    width: 22px; height: 22px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px; flex-shrink: 0;
-    transition: background 0.4s;
   }
-  .signal-icon.fav  { background: #E1F5EE; }
-  .signal-icon.def  { background: #FCECEA; }
-  .signal-icon.neu  { background: var(--bg2); }
-  .signal-icon.load { background: var(--bg2); }
+  .panel-up .panel-count { background: #E1F5EE; color: #0F6E56; }
+  .panel-dn .panel-count { background: #FCECEA; color: #C0392B; }
   @media (prefers-color-scheme: dark) {
-    .signal-icon.fav { background: #04342C; }
-    .signal-icon.def { background: #4A1B0C; }
-  }
-  .signal-title {
-    font-size: 14px; font-weight: 600;
-    transition: color 0.4s;
-  }
-  .signal-title.fav  { color: #0F6E56; }
-  .signal-title.def  { color: #C0392B; }
-  .signal-title.neu  { color: var(--text2); }
-  .signal-title.load { color: var(--text3); }
-
-  .signal-summary {
-    font-size: 12px; color: var(--text2);
-    padding: 0 16px 12px; line-height: 1.6;
+    .panel-up .panel-count { background: #04342C; }
+    .panel-dn .panel-count { background: #4A1B0C; color: #F0997B; }
   }
 
-  .signal-pills {
-    display: flex; flex-wrap: wrap; gap: 6px;
-    padding: 0 16px 12px;
-  }
+  .panel-pills { padding: 8px 14px 10px; display: flex; flex-direction: column; gap: 5px; min-height: 40px; }
+  .panel-empty { font-size: 11px; color: var(--text3); font-style: italic; }
+
   .pill {
-    display: flex; align-items: center; gap: 4px;
-    font-size: 10px; font-weight: 500;
-    padding: 3px 8px; border-radius: 20px;
-    border: 0.5px solid transparent;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; padding: 5px 10px;
+    border-radius: 6px; border: 0.5px solid transparent;
   }
+  .pill-label { font-weight: 600; margin-right: 6px; }
+  .pill-val   { font-variant-numeric: tabular-nums; margin-right: 6px; }
+  .pill-desc  { font-size: 10px; opacity: 0.75; margin-left: auto; }
+
   .pill.ok  { background: #E1F5EE; color: #085041; border-color: #5DCAA5; }
   .pill.bad { background: #FCECEA; color: #7B1E1E; border-color: #E07070; }
-  .pill.neu { background: var(--bg2); color: var(--text3); border-color: var(--border); }
   @media (prefers-color-scheme: dark) {
     .pill.ok  { background: #04342C; color: #5DCAA5; border-color: #0F6E56; }
     .pill.bad { background: #4A1B0C; color: #F0997B; border-color: #C0392B; }
   }
 
-  .footer-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
+  .footer-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
   .clock { font-size: 11px; color: var(--text3); font-variant-numeric: tabular-nums; }
   .note  { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
   @media (max-width: 600px) { .grid { grid-template-columns: 1fr 1fr; } }
@@ -194,14 +206,36 @@
 
   <div class="grid" id="grid"></div>
 
-  <!-- Signal box -->
-  <div class="signal" id="signal-box">
-    <div class="signal-header">
-      <div class="signal-icon load" id="sig-icon">⏳</div>
-      <div class="signal-title load" id="sig-title">Carregando análise…</div>
+  <div class="signal-wrap">
+    <!-- Verdict -->
+    <div class="verdict" id="verdict">
+      <span class="verdict-icon">⏳</span>
+      <span class="verdict-text load" id="verdict-text">Carregando análise…</span>
+      <span class="verdict-sub" id="verdict-sub"></span>
     </div>
-    <div class="signal-summary" id="sig-summary">Aguardando dados dos 5 drivers.</div>
-    <div class="signal-pills" id="sig-pills"></div>
+    <!-- Two panels -->
+    <div class="signal-panels">
+      <div class="signal-panel panel-up">
+        <div class="panel-header">
+          <span>🟢</span>
+          <span class="panel-label">A favor da ALTA</span>
+          <span class="panel-count" id="count-up">—</span>
+        </div>
+        <div class="panel-pills" id="pills-up">
+          <span class="panel-empty">Aguardando dados…</span>
+        </div>
+      </div>
+      <div class="signal-panel panel-dn">
+        <div class="panel-header">
+          <span>🔴</span>
+          <span class="panel-label">A favor da QUEDA</span>
+          <span class="panel-count" id="count-dn">—</span>
+        </div>
+        <div class="panel-pills" id="pills-dn">
+          <span class="panel-empty">Aguardando dados…</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="footer-row">
@@ -232,7 +266,6 @@ const WHY = [
 ];
 
 const charts = {};
-// Store latest pct changes: [es_pct, vix_price, dxy_pct, usdbrl_pct, wti_pct]
 const latest = { es: null, vix: null, dxy: null, usdbrl: null, wti: null };
 
 function buildGrid() {
@@ -240,7 +273,6 @@ function buildGrid() {
   INSTRUMENTS.forEach((ins, i) => {
     const card = document.createElement('div');
     card.className = `card ${ins.cardCls}`;
-    card.id = `card-${i}`;
     card.innerHTML = `
       <div class="card-top">
         <div class="rank-row">
@@ -314,57 +346,89 @@ function updateCard(i, data, ins) {
   ch.update('none');
 }
 
-// ── Signal analysis ──────────────────────────────────────────────
 function analyzeSignal() {
   const { es, vix, dxy, usdbrl, wti } = latest;
   if ([es, vix, dxy, usdbrl, wti].some(v => v === null)) return;
 
-  // Individual conditions (true = favorable for WIN)
-  const c = {
-    es:     { ok: es.pct > 0,       label: 'ES1!',    val: `${es.pct > 0 ? '+' : ''}${es.pct.toFixed(2)}%`,     desc: es.pct > 0 ? 'subindo ✓' : 'caindo ✗' },
-    vix:    { ok: vix.pct < 0,      label: 'VIX',     val: `${vix.pct > 0 ? '+' : ''}${vix.pct.toFixed(2)}%`,  desc: vix.pct < 0 ? 'caindo ✓' : 'subindo ✗' },
-    dxy:    { ok: dxy.pct < 0,      label: 'DXY',     val: `${dxy.pct > 0 ? '+' : ''}${dxy.pct.toFixed(2)}%`,  desc: dxy.pct < 0 ? 'caindo ✓' : 'subindo ✗' },
-    usdbrl: { ok: usdbrl.pct < 0,   label: 'USD/BRL', val: `${usdbrl.pct > 0 ? '+' : ''}${usdbrl.pct.toFixed(2)}%`, desc: usdbrl.pct < 0 ? 'caindo ✓' : 'subindo ✗' },
-    wti:    { ok: wti.pct >= -0.5,  label: 'WTI',     val: `${wti.pct > 0 ? '+' : ''}${wti.pct.toFixed(2)}%`,  desc: wti.pct >= -0.5 ? 'estável/subindo ✓' : 'caindo ✗' },
-  };
+  const drivers = [
+    {
+      label: 'ES1!',
+      val: `${es.pct >= 0 ? '+' : ''}${es.pct.toFixed(2)}%`,
+      ok: es.pct > 0,
+      desc: es.pct > 0 ? 'S&P subindo' : 'S&P caindo'
+    },
+    {
+      label: 'VIX',
+      val: `${vix.pct >= 0 ? '+' : ''}${vix.pct.toFixed(2)}%`,
+      ok: vix.pct < 0,
+      desc: vix.pct < 0 ? 'Volatilidade caindo' : 'Volatilidade subindo'
+    },
+    {
+      label: 'DXY',
+      val: `${dxy.pct >= 0 ? '+' : ''}${dxy.pct.toFixed(2)}%`,
+      ok: dxy.pct < 0,
+      desc: dxy.pct < 0 ? 'Dólar global caindo' : 'Dólar global subindo'
+    },
+    {
+      label: 'USD/BRL',
+      val: `${usdbrl.pct >= 0 ? '+' : ''}${usdbrl.pct.toFixed(2)}%`,
+      ok: usdbrl.pct < 0,
+      desc: usdbrl.pct < 0 ? 'Dólar/Real caindo' : 'Dólar/Real subindo'
+    },
+    {
+      label: 'WTI',
+      val: `${wti.pct >= 0 ? '+' : ''}${wti.pct.toFixed(2)}%`,
+      ok: wti.pct >= -0.5,
+      desc: wti.pct >= -0.5 ? 'Petróleo estável/subindo' : 'Petróleo caindo'
+    },
+  ];
 
-  const score = Object.values(c).filter(x => x.ok).length;
+  const bullish = drivers.filter(d => d.ok);
+  const bearish = drivers.filter(d => !d.ok);
+  const score   = bullish.length;
 
-  let cls, icon, title, summary;
+  // Verdict
+  let vIcon, vCls, vText, vSub;
   if (score >= 4) {
-    cls = 'fav'; icon = '🟢';
-    title = 'Ambiente FAVORÁVEL ao WIN';
-    summary = `${score} de 5 drivers alinhados para alta. Cenário de baixo risco sistêmico com fluxo positivo para o Ibovespa.`;
-  } else if (score >= 3) {
-    cls = 'neu'; icon = '🟡';
-    title = 'Ambiente NEUTRO / Misto';
-    summary = `${score} de 5 drivers favoráveis. Sem viés claro — mercado pode oscilar em qualquer direção.`;
+    vIcon = '🟢'; vCls = 'fav';
+    vText = 'Ambiente FAVORÁVEL à alta do WIN';
+    vSub  = `${score}/5 drivers alinhados`;
+  } else if (score === 3) {
+    vIcon = '🟡'; vCls = 'neu';
+    vText = 'Ambiente NEUTRO — sem viés claro';
+    vSub  = `${score}/5 drivers alinhados`;
   } else {
-    cls = 'def'; icon = '🔴';
-    title = 'Ambiente DESFAVORÁVEL ao WIN';
-    summary = `Apenas ${score} de 5 drivers favoráveis. Pressão vendedora predomina — cautela na entrada comprada.`;
+    vIcon = '🔴'; vCls = 'def';
+    vText = 'Ambiente DESFAVORÁVEL — pressão vendedora';
+    vSub  = `${score}/5 drivers alinhados`;
   }
 
-  // Render
-  const iconEl  = document.getElementById('sig-icon');
-  const titleEl = document.getElementById('sig-title');
-  const sumEl   = document.getElementById('sig-summary');
-  const pillsEl = document.getElementById('sig-pills');
+  document.querySelector('.verdict-icon').textContent = vIcon;
+  const vtEl = document.getElementById('verdict-text');
+  vtEl.textContent = vText;
+  vtEl.className = `verdict-text ${vCls}`;
+  document.getElementById('verdict-sub').textContent = vSub;
 
-  iconEl.className  = `signal-icon ${cls}`;
-  iconEl.textContent = icon;
-  titleEl.className  = `signal-title ${cls}`;
-  titleEl.textContent = title;
-  sumEl.textContent  = summary;
+  // Pills helper
+  function renderPills(containerId, countId, items, pillCls) {
+    const el = document.getElementById(containerId);
+    const ct = document.getElementById(countId);
+    ct.textContent = items.length;
+    if (items.length === 0) {
+      el.innerHTML = '<span class="panel-empty">Nenhum driver neste lado</span>';
+      return;
+    }
+    el.innerHTML = items.map(d => `
+      <div class="pill ${pillCls}">
+        <span class="pill-label">${d.label}</span>
+        <span class="pill-val">${d.val}</span>
+        <span class="pill-desc">${d.desc}</span>
+      </div>
+    `).join('');
+  }
 
-  pillsEl.innerHTML = '';
-  Object.values(c).forEach(item => {
-    const pillCls = item.ok ? 'ok' : 'bad';
-    const pill = document.createElement('span');
-    pill.className = `pill ${pillCls}`;
-    pill.textContent = `${item.label} ${item.val} — ${item.desc}`;
-    pillsEl.appendChild(pill);
-  });
+  renderPills('pills-up', 'count-up', bullish, 'ok');
+  renderPills('pills-dn', 'count-dn', bearish, 'bad');
 }
 
 async function refreshAll() {
