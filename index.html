@@ -9,14 +9,15 @@
   :root {
     --bg: #ffffff; --bg2: #f5f5f3; --bg3: #efefec;
     --text: #1a1a18; --text2: #5a5a57; --text3: #9a9a96;
-    --border: rgba(0,0,0,0.09); --border2: rgba(0,0,0,0.16);
-    --radius: 8px; --radius-lg: 12px;
+    --border: rgba(0,0,0,0.09);
+    --radius-lg: 12px;
+    --up: #0F6E56; --dn: #C0392B; --neu: #9a9a96;
   }
   @media (prefers-color-scheme: dark) {
     :root {
       --bg: #1e1e1c; --bg2: #272724; --bg3: #313130;
       --text: #e8e8e4; --text2: #a8a8a4; --text3: #686864;
-      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.15);
+      --border: rgba(255,255,255,0.08);
     }
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,13 +39,16 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 13px; font-weight: 500; flex-shrink: 0;
   }
-  .ttl { font-size: 16px; font-weight: 500; color: var(--text); }
+  .ttl { font-size: 16px; font-weight: 500; }
   .sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
   .badge {
     font-size: 10px; font-weight: 500; padding: 3px 10px;
     border-radius: 20px; background: #E1F5EE; color: #085041;
     border: 0.5px solid #5DCAA5;
     display: flex; align-items: center; gap: 4px;
+  }
+  @media (prefers-color-scheme: dark) {
+    .badge { background: #04342C; color: #5DCAA5; border-color: #0F6E56; }
   }
   .grid {
     display: grid;
@@ -54,10 +58,11 @@
   .card {
     background: var(--bg); border: 0.5px solid var(--border);
     border-radius: var(--radius-lg); overflow: hidden;
+    display: flex; flex-direction: column;
   }
-  .card.r1, .card.r2 { border-top: 3px solid #185FA5; }
-  .card.r3, .card.r4 { border-top: 3px solid #854F0B; }
-  .card.r5            { border-top: 3px solid #0F6E56; }
+  .card.r1,.card.r2 { border-top: 3px solid #185FA5; }
+  .card.r3,.card.r4 { border-top: 3px solid #854F0B; }
+  .card.r5           { border-top: 3px solid #0F6E56; }
   .card-top { padding: 10px 12px 8px; }
   .rank-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
   .rank { font-size: 10px; color: var(--text3); font-weight: 500; }
@@ -69,14 +74,51 @@
     .t-us { background: #042C53; color: #85B7EB; }
     .t-fx { background: #412402; color: #FAC775; }
     .t-cm { background: #4A1B0C; color: #F0997B; }
-    .badge { background: #04342C; color: #5DCAA5; border-color: #0F6E56; }
   }
-  .sym  { font-size: 15px; font-weight: 500; color: var(--text); }
+  .sym  { font-size: 15px; font-weight: 500; }
   .name { font-size: 10px; color: var(--text3); margin-top: 2px; }
-  .widget-wrap { width: 100%; background: var(--bg2); }
+
+  /* Price row */
+  .price-row {
+    display: flex; align-items: baseline; gap: 6px;
+    padding: 6px 12px 2px;
+  }
+  .price-val {
+    font-size: 18px; font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+  .price-chg {
+    font-size: 11px; font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .chg-up  { color: var(--up); }
+  .chg-dn  { color: var(--dn); }
+  .chg-neu { color: var(--neu); }
+
+  /* Sparkline */
+  .spark-wrap {
+    padding: 4px 8px 6px; flex: 1;
+  }
+  .spark-wrap canvas { width: 100% !important; height: 70px !important; display: block; }
+
+  /* Loading / error */
+  .card-loader {
+    height: 90px; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--text3);
+  }
+  .tv-link {
+    display: block; text-align: right;
+    font-size: 10px; color: var(--text3);
+    padding: 0 12px 6px; text-decoration: none;
+    opacity: 0.7;
+  }
+  .tv-link:hover { opacity: 1; }
+
   .card-why {
     padding: 7px 12px; font-size: 10px; color: var(--text3);
     line-height: 1.5; border-top: 0.5px solid var(--border);
+    margin-top: auto;
   }
   .signal {
     display: flex; align-items: flex-start; gap: 10px;
@@ -105,69 +147,12 @@
       </div>
     </div>
     <div class="badge">
-      <i class="ti ti-live-view" style="font-size:12px" aria-hidden="true"></i>
-      TradingView live
+      <i class="ti ti-chart-line" style="font-size:12px"></i>
+      Yahoo Finance live
     </div>
   </div>
 
-  <div class="grid">
-
-    <!-- #1 ES1! -->
-    <div class="card r1">
-      <div class="card-top">
-        <div class="rank-row"><span class="rank">#1</span><span class="tag t-us">EUA</span></div>
-        <div class="sym">ES1!</div>
-        <div class="name">Futuro S&P 500</div>
-      </div>
-      <div class="widget-wrap" id="w1"></div>
-      <div class="card-why">Move o WIN overnight. Principal referência global.</div>
-    </div>
-
-    <!-- #2 VIX -->
-    <div class="card r2">
-      <div class="card-top">
-        <div class="rank-row"><span class="rank">#2</span><span class="tag t-us">EUA</span></div>
-        <div class="sym">VIX</div>
-        <div class="name">Volatilidade S&P</div>
-      </div>
-      <div class="widget-wrap" id="w2"></div>
-      <div class="card-why">Acima de 25 = fuga de risco. Correlação inversa direta.</div>
-    </div>
-
-    <!-- #3 DXY -->
-    <div class="card r3">
-      <div class="card-top">
-        <div class="rank-row"><span class="rank">#3</span><span class="tag t-fx">Câmbio</span></div>
-        <div class="sym">DXY</div>
-        <div class="name">Índice do dólar</div>
-      </div>
-      <div class="widget-wrap" id="w3"></div>
-      <div class="card-why">Dólar forte drena emergentes. Pesa no WIN via fluxo.</div>
-    </div>
-
-    <!-- #4 USD/BRL -->
-    <div class="card r4">
-      <div class="card-top">
-        <div class="rank-row"><span class="rank">#4</span><span class="tag t-fx">Câmbio</span></div>
-        <div class="sym">USD/BRL</div>
-        <div class="name">Dólar / Real</div>
-      </div>
-      <div class="widget-wrap" id="w4"></div>
-      <div class="card-why">Câmbio local. Alta do dólar pressiona o Ibovespa.</div>
-    </div>
-
-    <!-- #5 WTI -->
-    <div class="card r5">
-      <div class="card-top">
-        <div class="rank-row"><span class="rank">#5</span><span class="tag t-cm">Commodity</span></div>
-        <div class="sym">WTI</div>
-        <div class="name">Petróleo WTI</div>
-      </div>
-      <div class="widget-wrap" id="w5"></div>
-      <div class="card-why">Petrobras ≈15% do Ibov. Petróleo sobe = WIN sobe.</div>
-    </div>
-
-  </div>
+  <div class="grid" id="grid"></div>
 
   <div class="signal">
     <div class="sdot"></div>
@@ -183,48 +168,168 @@
   <div class="footer-row">
     <span class="clock" id="clock">BRT --:--:--</span>
     <span class="note">
-      <i class="ti ti-refresh" style="font-size:12px" aria-hidden="true"></i>
-      Charts atualizam automaticamente em tempo real
+      <i class="ti ti-refresh" style="font-size:12px"></i>
+      Atualiza a cada 60 s
     </span>
   </div>
 
 </div>
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>
-function createWidget(containerId, symbol, theme) {
-  var container = document.getElementById(containerId);
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js';
-  script.async = true;
-  script.innerHTML = JSON.stringify({
-    "symbol": symbol,
-    "width": "100%",
-    "height": 140,
-    "locale": "br",
-    "dateRange": "1D",
-    "colorTheme": theme,
-    "isTransparent": false,
-    "autosize": true,
-    "largeChartUrl": ""
+const INSTRUMENTS = [
+  { rank:'#1', sym:'ES1!',    name:'Futuro S&P 500',  tag:'EUA',       tagCls:'t-us', cardCls:'r1', yf:'ES=F',  tvSym:'CME_MINI:ES1!',  dp:2 },
+  { rank:'#2', sym:'VIX',     name:'Volatilidade S&P',tag:'EUA',       tagCls:'t-us', cardCls:'r2', yf:'%5EVIX',tvSym:'CBOE:VIX',       dp:2 },
+  { rank:'#3', sym:'DXY',     name:'Índice do dólar', tag:'Câmbio',    tagCls:'t-fx', cardCls:'r3', yf:'DX-Y.NYB',tvSym:'TVC:DXY',      dp:3 },
+  { rank:'#4', sym:'USD/BRL', name:'Dólar / Real',    tag:'Câmbio',    tagCls:'t-fx', cardCls:'r4', yf:'USDBRL=X',tvSym:'FX:USDBRL',    dp:4 },
+  { rank:'#5', sym:'WTI',     name:'Petróleo WTI',    tag:'Commodity', tagCls:'t-cm', cardCls:'r5', yf:'CL=F',  tvSym:'NYMEX:CL1!',     dp:2 },
+];
+
+const WHY = [
+  'Move o WIN overnight. Principal referência global.',
+  'Acima de 25 = fuga de risco. Correlação inversa direta.',
+  'Dólar forte drena emergentes. Pesa no WIN via fluxo.',
+  'Câmbio local. Alta do dólar pressiona o Ibovespa.',
+  'Petrobras ≈15% do Ibov. Petróleo sobe = WIN sobe.',
+];
+
+const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const charts = {};
+
+// Build card HTML
+function buildGrid() {
+  const grid = document.getElementById('grid');
+  INSTRUMENTS.forEach((ins, i) => {
+    const card = document.createElement('div');
+    card.className = `card ${ins.cardCls}`;
+    card.id = `card-${i}`;
+    card.innerHTML = `
+      <div class="card-top">
+        <div class="rank-row">
+          <span class="rank">${ins.rank}</span>
+          <span class="tag ${ins.tagCls}">${ins.tag}</span>
+        </div>
+        <div class="sym">${ins.sym}</div>
+        <div class="name">${ins.name}</div>
+      </div>
+      <div class="price-row" id="price-${i}">
+        <span class="price-val">—</span>
+        <span class="price-chg chg-neu">—</span>
+      </div>
+      <div class="spark-wrap">
+        <canvas id="spark-${i}" height="70"></canvas>
+      </div>
+      <a class="tv-link" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(ins.tvSym)}" target="_blank" rel="noopener">
+        Ver no TradingView ↗
+      </a>
+      <div class="card-why">${WHY[i]}</div>
+    `;
+    grid.appendChild(card);
+
+    // init sparkline chart
+    const ctx = document.getElementById(`spark-${i}`).getContext('2d');
+    const lineColor = ins.cardCls === 'r1' || ins.cardCls === 'r2' ? '#185FA5'
+                    : ins.cardCls === 'r5' ? '#0F6E56' : '#854F0B';
+    charts[i] = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          data: [],
+          borderColor: lineColor,
+          borderWidth: 1.5,
+          pointRadius: 0,
+          fill: true,
+          backgroundColor: lineColor + '18',
+          tension: 0.3,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: {
+          x: { display: false },
+          y: { display: false, grace: '5%' }
+        },
+        animation: { duration: 400 }
+      }
+    });
   });
-  container.appendChild(script);
 }
 
-var theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+// Fetch via Yahoo Finance proxy (allorigins)
+async function fetchQuote(yf) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yf}?interval=5m&range=1d`;
+  const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+  const r = await fetch(proxy);
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
 
-createWidget('w1', 'CME_MINI:ES1!',  theme);
-createWidget('w2', 'CBOE:VIX',       theme);
-createWidget('w3', 'TVC:DXY',        theme);
-createWidget('w4', 'FX:USDBRL',      theme);
-createWidget('w5', 'NYMEX:CL1!',     theme);
+function parseQuote(json) {
+  const result = json.chart.result[0];
+  const meta   = result.meta;
+  const closes = result.indicators.quote[0].close;
+  const timestamps = result.timestamp;
 
+  // Filter nulls
+  const pts = closes.map((c, i) => ({ c, t: timestamps[i] })).filter(p => p.c != null);
+
+  const price = meta.regularMarketPrice ?? pts[pts.length-1]?.c;
+  const prev  = meta.chartPreviousClose ?? meta.previousClose;
+  const chg   = price - prev;
+  const pct   = (chg / prev) * 100;
+
+  return { price, chg, pct, pts };
+}
+
+function updateCard(i, data, ins) {
+  // Price row
+  const row = document.getElementById(`price-${i}`);
+  const valEl = row.querySelector('.price-val');
+  const chgEl = row.querySelector('.price-chg');
+
+  valEl.textContent = data.price.toFixed(ins.dp);
+  const sign = data.chg >= 0 ? '+' : '';
+  chgEl.textContent = `${sign}${data.chg.toFixed(ins.dp)} (${sign}${data.pct.toFixed(2)}%)`;
+  chgEl.className = 'price-chg ' + (data.chg > 0 ? 'chg-up' : data.chg < 0 ? 'chg-dn' : 'chg-neu');
+
+  // Sparkline
+  const ch = charts[i];
+  ch.data.labels  = data.pts.map(p => p.t);
+  ch.data.datasets[0].data = data.pts.map(p => p.c);
+  ch.update('none');
+}
+
+async function refreshAll() {
+  for (let i = 0; i < INSTRUMENTS.length; i++) {
+    const ins = INSTRUMENTS[i];
+    try {
+      const json = await fetchQuote(ins.yf);
+      const data = parseQuote(json);
+      updateCard(i, data, ins);
+    } catch(e) {
+      console.warn(ins.sym, e);
+      const row = document.getElementById(`price-${i}`);
+      row.querySelector('.price-val').textContent = '—';
+      row.querySelector('.price-chg').textContent = 'erro';
+    }
+  }
+}
+
+// Clock
 function tickClock() {
-  var t = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
-  var p = function(n) { return String(n).padStart(2, '0'); };
+  const t = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+  const p = n => String(n).padStart(2,'0');
   document.getElementById('clock').textContent =
     'BRT ' + p(t.getHours()) + ':' + p(t.getMinutes()) + ':' + p(t.getSeconds());
 }
+
+buildGrid();
+refreshAll();
+setInterval(refreshAll, 60_000);
 tickClock();
 setInterval(tickClock, 1000);
 </script>
