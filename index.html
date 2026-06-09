@@ -250,14 +250,14 @@
 const INSTRUMENTS = [
   { rank:'#1', sym:'ES1!',    name:'Futuro S&P 500',   tag:'EUA',     tagCls:'t-us', cardCls:'r1', yf:'ES=F',     tvSym:'CME_MINI:ES1!',  dp:2 },
   { rank:'#2', sym:'VIX',     name:'Volatilidade S&P', tag:'EUA',     tagCls:'t-us', cardCls:'r2', yf:'%5EVIX',   tvSym:'CBOE:VIX',       dp:2 },
-  { rank:'#3', sym:'DXY',     name:'Índice do dólar',  tag:'Câmbio',  tagCls:'t-fx', cardCls:'r3', yf:'%5EDXY',   tvSym:'TVC:DXY',        dp:3 },
+  { rank:'#3', sym:'DXY',     name:'Índice do dólar',  tag:'Câmbio',  tagCls:'t-fx', cardCls:'r3', yf:'DX-Y.NYB', tvSym:'TVC:DXY',        dp:3 },
   { rank:'#4', sym:'USD/BRL', name:'Dólar / Real',     tag:'Câmbio',  tagCls:'t-fx', cardCls:'r4', yf:'BRL%3DX',  tvSym:'FX:USDBRL',      dp:4 },
   { rank:'#5', sym:'WTI',     name:'Petróleo WTI',     tag:'Cmdty',   tagCls:'t-cm', cardCls:'r5', yf:'CL=F',     tvSym:'NYMEX:CL1!',     dp:2 },
   { rank:'#6', sym:'NQ1!',    name:'Futuro Nasdaq 100',tag:'EUA',     tagCls:'t-us', cardCls:'r6', yf:'NQ=F',     tvSym:'CME_MINI:NQ1!',  dp:2 },
   { rank:'#7', sym:'SPX',     name:'S&P 500 à vista',  tag:'EUA',     tagCls:'t-us', cardCls:'r7', yf:'%5EGSPC',  tvSym:'SP:SPX',         dp:2 },
-  { rank:'#8', sym:'BR10Y',   name:'Juro 10a Brasil',  tag:'Brasil',  tagCls:'t-br', cardCls:'r8', yf:'IRFM.SA',  tvSym:'TVC:BR10Y',      dp:3 },
+  { rank:'#8', sym:'EWZ',     name:'ETF Brasil (NYSE)', tag:'ETF',     tagCls:'t-et', cardCls:'r8', yf:'EWZ',      tvSym:'AMEX:EWZ',       dp:2 },
   { rank:'#9', sym:'US10Y',   name:'Treasury 10a EUA', tag:'Juros',   tagCls:'t-br', cardCls:'r9', yf:'%5ETNX',   tvSym:'TVC:US10Y',      dp:3 },
-  { rank:'#10',sym:'EWZ',     name:'ETF Brasil (NYSE)',tag:'ETF',     tagCls:'t-et', cardCls:'r10',yf:'EWZ',      tvSym:'AMEX:EWZ',       dp:2 },
+  { rank:'#10',sym:'IBOV',    name:'Índice Bovespa',   tag:'Brasil',  tagCls:'t-br', cardCls:'r10',yf:'%5EBVSP',  tvSym:'BMFBOVESPA:IBOV',dp:0 },
 ];
 const WHY = [
   'Move o WIN overnight. Principal referência global.',
@@ -267,13 +267,13 @@ const WHY = [
   'Petrobras ≈15% do Ibov. Petróleo sobe = WIN sobe.',
   'Lidera o ES intraday. NQ forte = apetite por risco.',
   'Spot vs futuro. Divergência ES×SPX = pressão de curto prazo.',
-  'Juro longo BR sobe = custo de capital sobe = WIN cai.',
-  'Treasury sobe = dólar global sobe = emergentes sangram.',
   'Fluxo gringo em tempo real. Abre 10h30 BRT. Proxy direto do Ibov.',
+  'Treasury sobe = dólar global sobe = emergentes sangram.',
+  'Referência local. Confirma se o fluxo externo está sendo absorvido.',
 ];
 
 const charts = {};
-const latest = { es: null, vix: null, dxy: null, usdbrl: null, wti: null, nq: null, spx: null, br10y: null, us10y: null, ewz: null };
+const latest = { es: null, vix: null, dxy: null, usdbrl: null, wti: null, nq: null, spx: null, ewz: null, us10y: null, ibov: null };
 
 function buildGrid() {
   const grid = document.getElementById('grid');
@@ -374,8 +374,8 @@ function updateCard(i, data, ins) {
 }
 
 function analyzeSignal() {
-  const { es, vix, dxy, usdbrl, wti, nq, spx, br10y, us10y, ewz } = latest;
-  const loaded = [es, vix, dxy, usdbrl, wti, nq, spx, br10y, us10y, ewz].filter(v => v !== null);
+  const { es, vix, dxy, usdbrl, wti, nq, spx, ewz, us10y, ibov } = latest;
+  const loaded = [es, vix, dxy, usdbrl, wti, nq, spx, ewz, us10y, ibov].filter(v => v !== null);
   if (loaded.length === 0) return;
 
   const brt = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
@@ -390,12 +390,12 @@ function analyzeSignal() {
     wti   && { label:'WTI',     val:`${wti.pct>=0?'+':''}${wti.pct.toFixed(2)}%`,     ok: wti.pct >= -0.5,    desc: wti.pct >= -0.5 ? 'Petróleo estável' : 'Petróleo caindo' },
     nq    && { label:'NQ1!',    val:`${nq.pct>=0?'+':''}${nq.pct.toFixed(2)}%`,       ok: nq.pct > 0,         desc: nq.pct > 0 ? 'Nasdaq subindo' : 'Nasdaq caindo' },
     spx   && { label:'SPX',     val:`${spx.pct>=0?'+':''}${spx.pct.toFixed(2)}%`,     ok: spx.pct > 0,        desc: spx.pct > 0 ? 'SPX subindo' : 'SPX caindo' },
-    br10y && { label:'BR10Y',   val:`${br10y.pct>=0?'+':''}${br10y.pct.toFixed(2)}%`, ok: br10y.pct <= 0,     desc: br10y.pct <= 0 ? 'Juro BR estável' : 'Juro BR subindo' },
-    us10y && { label:'US10Y',   val:`${us10y.pct>=0?'+':''}${us10y.pct.toFixed(2)}%`, ok: us10y.pct < 0,      desc: us10y.pct < 0 ? 'Treasury ↓' : 'Treasury ↑' },
     ewz   && { label:'EWZ',     val: ewzOpen ? `${ewz.pct>=0?'+':''}${ewz.pct.toFixed(2)}%` : '—',
                                 ok: ewzOpen ? ewz.pct > 0 : null,
                                 desc: !ewzOpen ? 'Fechado (abre 10h30)' : ewz.pct > 0 ? 'Fluxo gringo +' : 'Fluxo gringo −',
                                 inactive: !ewzOpen },
+    us10y && { label:'US10Y',   val:`${us10y.pct>=0?'+':''}${us10y.pct.toFixed(2)}%`, ok: us10y.pct < 0,      desc: us10y.pct < 0 ? 'Treasury ↓' : 'Treasury ↑' },
+    ibov  && { label:'IBOV',    val:`${ibov.pct>=0?'+':''}${ibov.pct.toFixed(2)}%`,   ok: ibov.pct > 0,       desc: ibov.pct > 0 ? 'Ibov subindo' : 'Ibov caindo' },
   ].filter(Boolean);
 
   const active  = drivers.filter(d => !d.inactive);
@@ -442,7 +442,7 @@ function analyzeSignal() {
 }
 
 async function refreshAll() {
-  const keys = ['es','vix','dxy','usdbrl','wti','nq','spx','br10y','us10y','ewz'];
+  const keys = ['es','vix','dxy','usdbrl','wti','nq','spx','ewz','us10y','ibov'];
   const results = await Promise.allSettled(
     INSTRUMENTS.map(ins => fetchQuote(ins.yf))
   );
