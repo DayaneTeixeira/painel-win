@@ -78,6 +78,8 @@
   .card.r6,.card.r7 { border-top: 2px solid #a78bfa; }
   .card.r8,.card.r9 { border-top: 2px solid #38bdf8; }
   .card.r10          { border-top: 2px solid #fb923c; }
+  .card.r11,.card.r12,.card.r13 { border-top: 2px solid #f43f5e; }
+  .card.r14,.card.r15 { border-top: 2px solid #84cc16; }
   .card-top { padding: 10px 12px 7px; }
   .rank-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
   .rank { font-size: 10px; color: var(--text3); font-weight: 500; }
@@ -87,6 +89,8 @@
   .t-cm { background: rgba(248,113,113,0.12); color: #fca5a5; border: 0.5px solid rgba(248,113,113,0.3); }
   .t-br { background: rgba(167,139,250,0.12); color: #c4b5fd; border: 0.5px solid rgba(167,139,250,0.3); }
   .t-et { background: rgba(251,146,60,0.12);  color: #fdba74; border: 0.5px solid rgba(251,146,60,0.3); }
+  .t-as { background: rgba(244,63,94,0.12);   color: #fda4af; border: 0.5px solid rgba(244,63,94,0.3); }
+  .t-eu { background: rgba(99,102,241,0.12);  color: #a5b4fc; border: 0.5px solid rgba(99,102,241,0.3); }
   .sym  { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: 0.2px; }
   .name { font-size: 10px; color: var(--text3); margin-top: 2px; }
   .price-row {
@@ -257,7 +261,12 @@ const INSTRUMENTS = [
   { rank:'#7', sym:'SPX',     name:'S&P 500 à vista',  tag:'EUA',     tagCls:'t-us', cardCls:'r7', yf:'%5EGSPC',  tvSym:'SP:SPX',         dp:2 },
   { rank:'#8', sym:'EWZ',     name:'ETF Brasil (NYSE)', tag:'ETF',     tagCls:'t-et', cardCls:'r8', yf:'EWZ',      tvSym:'AMEX:EWZ',       dp:2 },
   { rank:'#9', sym:'US10Y',   name:'Treasury 10a EUA', tag:'Juros',   tagCls:'t-br', cardCls:'r9', yf:'%5ETNX',   tvSym:'TVC:US10Y',      dp:3 },
-  { rank:'#10',sym:'IBOV',    name:'Índice Bovespa',   tag:'Brasil',  tagCls:'t-br', cardCls:'r10',yf:'%5EBVSP',  tvSym:'BMFBOVESPA:IBOV',dp:0 },
+  { rank:'#10',sym:'IBOV',    name:'Índice Bovespa',    tag:'Brasil',  tagCls:'t-br', cardCls:'r10',yf:'%5EBVSP',  tvSym:'BMFBOVESPA:IBOV', dp:0 },
+  { rank:'#11',sym:'N225',    name:'Nikkei 225',          tag:'Ásia',    tagCls:'t-as', cardCls:'r11',yf:'%5EN225',  tvSym:'INDEX:NKY',       dp:0 },
+  { rank:'#12',sym:'DAX',     name:'DAX Alemanha',        tag:'Europa',  tagCls:'t-eu', cardCls:'r12',yf:'%5EGDAXI', tvSym:'XETR:DAX',        dp:0 },
+  { rank:'#13',sym:'HSI',     name:'Hang Seng',           tag:'Ásia',    tagCls:'t-as', cardCls:'r13',yf:'%5EHSI',   tvSym:'HKEX:HSI',        dp:0 },
+  { rank:'#14',sym:'Minério', name:'Minério de Ferro',    tag:'Cmdty',   tagCls:'t-cm', cardCls:'r14',yf:'TIO=F',    tvSym:'COMEX:TIO1!',     dp:2 },
+  { rank:'#15',sym:'Soja',    name:'Soja Futuros',        tag:'Cmdty',   tagCls:'t-cm', cardCls:'r15',yf:'ZS=F',     tvSym:'CBOT:ZS1!',       dp:2 },
 ];
 const WHY = [
   'Move o WIN overnight. Principal referência global.',
@@ -270,10 +279,15 @@ const WHY = [
   'Fluxo gringo em tempo real. Abre 10h30 BRT. Proxy direto do Ibov.',
   'Treasury sobe = dólar global sobe = emergentes sangram.',
   'Referência local. Confirma se o fluxo externo está sendo absorvido.',
+  'Ásia fecha antes do BR. Gap do Nikkei antecipa humor de abertura.',
+  'Europa abre antes do BR. DAX forte = risco global ligado.',
+  'China/HK. Proxy risco emergente. Sangra junto com Ibov.',
+  'Vale ≈13% do Ibov. Minério sobe = Vale sobe = WIN sobe.',
+  'Agro pesa no Ibov. Soja forte = BRL mais forte = WIN beneficia.',
 ];
 
 const charts = {};
-const latest = { es: null, vix: null, dxy: null, usdbrl: null, wti: null, nq: null, spx: null, ewz: null, us10y: null, ibov: null };
+const latest = { es: null, vix: null, dxy: null, usdbrl: null, wti: null, nq: null, spx: null, ewz: null, us10y: null, ibov: null, n225: null, dax: null, hsi: null, minerio: null, soja: null };
 
 function buildGrid() {
   const grid = document.getElementById('grid');
@@ -374,8 +388,8 @@ function updateCard(i, data, ins) {
 }
 
 function analyzeSignal() {
-  const { es, vix, dxy, usdbrl, wti, nq, spx, ewz, us10y, ibov } = latest;
-  const loaded = [es, vix, dxy, usdbrl, wti, nq, spx, ewz, us10y, ibov].filter(v => v !== null);
+  const { es, vix, dxy, usdbrl, wti, nq, spx, ewz, us10y, ibov, n225, dax, hsi, minerio, soja } = latest;
+  const loaded = [es, vix, dxy, usdbrl, wti, nq, spx, ewz, us10y, ibov, n225, dax, hsi, minerio, soja].filter(v => v !== null);
   if (loaded.length === 0) return;
 
   const brt = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
@@ -396,6 +410,11 @@ function analyzeSignal() {
                                 inactive: !ewzOpen },
     us10y && { label:'US10Y',   val:`${us10y.pct>=0?'+':''}${us10y.pct.toFixed(2)}%`, ok: us10y.pct < 0,      desc: us10y.pct < 0 ? 'Treasury ↓' : 'Treasury ↑' },
     ibov  && { label:'IBOV',    val:`${ibov.pct>=0?'+':''}${ibov.pct.toFixed(2)}%`,   ok: ibov.pct > 0,       desc: ibov.pct > 0 ? 'Ibov subindo' : 'Ibov caindo' },
+    n225  && { label:'N225',    val:`${n225.pct>=0?'+':''}${n225.pct.toFixed(2)}%`,   ok: n225.pct > 0,       desc: n225.pct > 0 ? 'Nikkei ↑' : 'Nikkei ↓' },
+    dax   && { label:'DAX',     val:`${dax.pct>=0?'+':''}${dax.pct.toFixed(2)}%`,    ok: dax.pct > 0,        desc: dax.pct > 0 ? 'Europa ↑' : 'Europa ↓' },
+    hsi   && { label:'HSI',     val:`${hsi.pct>=0?'+':''}${hsi.pct.toFixed(2)}%`,    ok: hsi.pct > 0,        desc: hsi.pct > 0 ? 'HK/China ↑' : 'HK/China ↓' },
+    minerio && { label:'Minério', val:`${minerio.pct>=0?'+':''}${minerio.pct.toFixed(2)}%`, ok: minerio.pct > 0, desc: minerio.pct > 0 ? 'Vale favorecida' : 'Vale pressionada' },
+    soja  && { label:'Soja',    val:`${soja.pct>=0?'+':''}${soja.pct.toFixed(2)}%`,  ok: soja.pct > 0,       desc: soja.pct > 0 ? 'Agro ↑' : 'Agro ↓' },
   ].filter(Boolean);
 
   const active  = drivers.filter(d => !d.inactive);
@@ -442,7 +461,7 @@ function analyzeSignal() {
 }
 
 async function refreshAll() {
-  const keys = ['es','vix','dxy','usdbrl','wti','nq','spx','ewz','us10y','ibov'];
+  const keys = ['es','vix','dxy','usdbrl','wti','nq','spx','ewz','us10y','ibov','n225','dax','hsi','minerio','soja'];
   const results = await Promise.allSettled(
     INSTRUMENTS.map(ins => fetchQuote(ins.yf))
   );
