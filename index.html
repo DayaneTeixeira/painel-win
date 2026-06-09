@@ -250,12 +250,12 @@
 const INSTRUMENTS = [
   { rank:'#1', sym:'ES1!',    name:'Futuro S&P 500',   tag:'EUA',     tagCls:'t-us', cardCls:'r1', yf:'ES=F',     tvSym:'CME_MINI:ES1!',  dp:2 },
   { rank:'#2', sym:'VIX',     name:'Volatilidade S&P', tag:'EUA',     tagCls:'t-us', cardCls:'r2', yf:'%5EVIX',   tvSym:'CBOE:VIX',       dp:2 },
-  { rank:'#3', sym:'DXY',     name:'Índice do dólar',  tag:'Câmbio',  tagCls:'t-fx', cardCls:'r3', yf:'DX=F',     tvSym:'TVC:DXY',        dp:3 },
+  { rank:'#3', sym:'DXY',     name:'Índice do dólar',  tag:'Câmbio',  tagCls:'t-fx', cardCls:'r3', yf:'%5EDXY',   tvSym:'TVC:DXY',        dp:3 },
   { rank:'#4', sym:'USD/BRL', name:'Dólar / Real',     tag:'Câmbio',  tagCls:'t-fx', cardCls:'r4', yf:'BRL%3DX',  tvSym:'FX:USDBRL',      dp:4 },
   { rank:'#5', sym:'WTI',     name:'Petróleo WTI',     tag:'Cmdty',   tagCls:'t-cm', cardCls:'r5', yf:'CL=F',     tvSym:'NYMEX:CL1!',     dp:2 },
   { rank:'#6', sym:'NQ1!',    name:'Futuro Nasdaq 100',tag:'EUA',     tagCls:'t-us', cardCls:'r6', yf:'NQ=F',     tvSym:'CME_MINI:NQ1!',  dp:2 },
   { rank:'#7', sym:'SPX',     name:'S&P 500 à vista',  tag:'EUA',     tagCls:'t-us', cardCls:'r7', yf:'%5EGSPC',  tvSym:'SP:SPX',         dp:2 },
-  { rank:'#8', sym:'BR10Y',   name:'Juro 10a Brasil',  tag:'Brasil',  tagCls:'t-br', cardCls:'r8', yf:'BR10Y=RR',  tvSym:'TVC:BR10Y',      dp:3 },
+  { rank:'#8', sym:'BR10Y',   name:'Juro 10a Brasil',  tag:'Brasil',  tagCls:'t-br', cardCls:'r8', yf:'IRFM.SA',  tvSym:'TVC:BR10Y',      dp:3 },
   { rank:'#9', sym:'US10Y',   name:'Treasury 10a EUA', tag:'Juros',   tagCls:'t-br', cardCls:'r9', yf:'%5ETNX',   tvSym:'TVC:US10Y',      dp:3 },
   { rank:'#10',sym:'EWZ',     name:'ETF Brasil (NYSE)',tag:'ETF',     tagCls:'t-et', cardCls:'r10',yf:'EWZ',      tvSym:'AMEX:EWZ',       dp:2 },
 ];
@@ -463,7 +463,7 @@ async function refreshAll() {
       console.warn(ins.sym, res.reason);
       const row = document.getElementById(`price-${i}`);
       row.querySelector('.price-val').textContent = '—';
-      row.querySelector('.price-chg').textContent = 'sem dado';
+      row.querySelector('.price-chg').textContent = `sem dado (${ins.yf})`;
     }
   });
   analyzeSignal();
