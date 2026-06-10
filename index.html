@@ -65,6 +65,61 @@
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
     gap: 8px; margin-bottom: 10px;
   }
+
+  /* ── Painel Pré-Abertura ─────────────────────────────── */
+  #pre-abertura {
+    display: block;
+    margin: 18px 0 0;
+    border: 1.5px solid #f59e0b;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .pre-abertura-pulse {
+    box-shadow: 0 0 14px 3px rgba(245,158,11,0.25);
+  }
+  .pre-header {
+    background: linear-gradient(135deg,#78350f,#92400e);
+    padding: 10px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .pre-header-left { display:flex; align-items:center; gap:10px; }
+  .pre-badge {
+    background:#f59e0b; color:#1c1917;
+    font-size:11px; font-weight:700; padding:3px 10px;
+    border-radius:20px; letter-spacing:.5px;
+  }
+  .pre-title { font-size:13px; font-weight:600; color:#fef3c7; }
+  .pre-countdown { font-size:12px; color:#fcd34d; font-variant-numeric:tabular-nums; }
+  .pre-body { background:#1c1917; padding:14px 18px; }
+  .pre-grid {
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .pre-card {
+    background:#292524; border-radius:8px;
+    padding:10px; text-align:center;
+    border: 1px solid #44403c;
+  }
+  .pre-card.bull { border-color:#22c55e; background:rgba(34,197,94,.08); }
+  .pre-card.bear { border-color:#ef4444; background:rgba(239,68,68,.08); }
+  .pre-card.neutral { border-color:#6b7280; }
+  .pre-card .pc-sym  { font-size:11px; font-weight:700; color:#d6d3d1; }
+  .pre-card .pc-val  { font-size:16px; font-weight:700; margin:4px 0 2px; }
+  .pre-card .pc-desc { font-size:10px; color:#a8a29e; }
+  .pre-card.bull .pc-val { color:#4ade80; }
+  .pre-card.bear .pc-val { color:#f87171; }
+  .pre-card.neutral .pc-val { color:#9ca3af; }
+  .pre-verdict {
+    display:flex; align-items:center; justify-content:space-between;
+    background:#292524; border-radius:8px; padding:10px 16px;
+    border-left:4px solid #f59e0b;
+  }
+  .pre-verdict-text { font-size:13px; font-weight:600; color:#fef3c7; }
+  .pre-verdict-sub  { font-size:11px; color:#a8a29e; margin-top:2px; }
+  .pre-score { font-size:22px; font-weight:800; color:#f59e0b; }
+
   .card {
     background: var(--bg3); border: 0.5px solid var(--border);
     border-radius: var(--radius-lg); overflow: hidden;
@@ -118,6 +173,123 @@
     padding: 7px 12px; font-size: 10px; color: var(--text3);
     line-height: 1.55; border-top: 0.5px solid var(--border); margin-top: auto;
   }
+
+
+  /* ── Abas ─────────────────────────────────────────────── */
+  .tabs-nav {
+    display: flex; gap: 4px;
+    background: var(--bg2); border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg); padding: 4px;
+    margin-bottom: 14px;
+  }
+  .tab-btn {
+    flex: 1; padding: 8px 14px; border-radius: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: .3px;
+    cursor: pointer; border: none; background: transparent;
+    color: var(--text2); transition: all .2s;
+  }
+  .tab-btn.active {
+    background: var(--bg3); color: var(--text1);
+    border: 0.5px solid var(--border);
+  }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── Painel WIN/DOL ────────────────────────────────────── */
+  .wd-contracts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .wd-card {
+    background: var(--bg2); border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+  }
+  .wd-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 14px; border-bottom: 0.5px solid var(--border);
+  }
+  .wd-sym  { font-size: 18px; font-weight: 700; color: var(--text1); }
+  .wd-name { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .wd-tag  { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; letter-spacing:.5px; }
+  .wd-tag-win { background: rgba(88,166,255,0.12); color: #79c0ff; border:0.5px solid rgba(88,166,255,0.25); }
+  .wd-tag-dol { background: rgba(63,185,80,0.12);  color: #7ee787; border:0.5px solid rgba(63,185,80,0.25); }
+
+  .wd-body { padding: 14px; }
+  .wd-price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+  .wd-price { font-size: 30px; font-weight: 700; color: var(--text1); font-variant-numeric: tabular-nums; }
+  .wd-pct   { font-size: 15px; font-weight: 700; }
+  .wd-pct.up { color: var(--up); } .wd-pct.dn { color: var(--dn); } .wd-pct.neu { color: var(--text2); }
+
+  .wd-gap {
+    border-radius: 8px; padding: 9px 13px;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .wd-gap.gup  { background: rgba(63,185,80,0.08);  border:0.5px solid rgba(63,185,80,0.25); }
+  .wd-gap.gdn  { background: rgba(248,81,73,0.08);  border:0.5px solid rgba(248,81,73,0.25); }
+  .wd-gap.gflt { background: rgba(139,148,158,0.07);border:0.5px solid rgba(139,148,158,0.2); }
+  .wd-gap-label { font-size: 10px; color: var(--text2); margin-bottom: 3px; }
+  .wd-gap-val   { font-size: 14px; font-weight: 700; }
+  .wd-gap-val.up { color: var(--up); } .wd-gap-val.dn { color: var(--dn); } .wd-gap-val.neu { color: var(--text2); }
+  .wd-gap-sig   { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+  .wd-gap-sig.bull { background:rgba(63,185,80,0.15);  color: var(--up); }
+  .wd-gap-sig.bear { background:rgba(248,81,73,0.15);  color: var(--dn); }
+  .wd-gap-sig.flat { background:rgba(139,148,158,0.10);color: var(--text2); }
+
+  .wd-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; margin-bottom: 10px; }
+  .wd-metric  { background: var(--bg3); border-radius: 8px; padding: 7px 9px; text-align:center; }
+  .wd-metric-lbl { font-size: 10px; color: var(--text2); margin-bottom: 3px; }
+  .wd-metric-val { font-size: 12px; font-weight: 700; color: var(--text1); }
+  .wd-metric-val.up { color: var(--up); } .wd-metric-val.dn { color: var(--dn); } .wd-metric-val.acc { color: var(--acc); }
+
+  .wd-dir { border-radius: 8px; padding: 9px 13px; display: flex; align-items: center; gap: 10px; }
+  .wd-dir.compra { background:rgba(63,185,80,0.10);  border:1px solid rgba(63,185,80,0.3); }
+  .wd-dir.venda  { background:rgba(248,81,73,0.10);  border:1px solid rgba(248,81,73,0.3); }
+  .wd-dir.neutro { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); }
+  .wd-dir-icon { font-size: 18px; }
+  .wd-dir-text { font-size: 12px; font-weight: 700; }
+  .wd-dir-text.compra { color: var(--up); } .wd-dir-text.venda { color: var(--dn); } .wd-dir-text.neutro { color: var(--acc); }
+  .wd-dir-sub  { font-size: 10px; color: var(--text2); margin-top: 2px; }
+
+  /* clock bar wd */
+  .wd-clock-bar { display:flex; gap:10px; margin-bottom:14px; }
+  .wd-clock-item { flex:1; background:var(--bg2); border:0.5px solid var(--border); border-radius:10px; padding:8px 14px; text-align:center; }
+  .wd-clock-lbl  { font-size:10px; color:var(--text2); letter-spacing:.4px; text-transform:uppercase; }
+  .wd-clock-val  { font-size:16px; font-weight:700; color:var(--text1); font-variant-numeric:tabular-nums; }
+  .wd-clock-val.ativo { color: var(--acc); }
+
+  /* radar wd */
+  .wd-radar { background:var(--bg2); border:1.5px solid var(--acc); border-radius:var(--radius-lg); overflow:hidden; }
+  .wd-radar-hdr {
+    background:#1c1917; padding:9px 16px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .wd-radar-hdr-l { display:flex; align-items:center; gap:9px; }
+  .wd-rbadge { background:var(--acc);color:#1c1917;font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.5px; }
+  .wd-rtitle { font-size:12px;font-weight:600;color:#fef3c7; }
+  .wd-rstatus { font-size:11px;font-variant-numeric:tabular-nums; }
+  .wd-rstatus.ativo   { color:#4ade80; }
+  .wd-rstatus.aguarda { color:#fcd34d; }
+  .wd-rstatus.closed  { color:var(--text2); }
+
+  .wd-radar-body { background:#111; padding:12px 16px; }
+  .wd-rgrid { display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:10px; }
+  .wd-rc { background:#1c1917;border-radius:8px;padding:9px;text-align:center;border:1px solid #44403c; }
+  .wd-rc.bull { border-color:#22c55e;background:rgba(34,197,94,.08); }
+  .wd-rc.bear { border-color:#ef4444;background:rgba(239,68,68,.08); }
+  .wd-rc-sym  { font-size:10px;font-weight:700;color:#d6d3d1;margin-bottom:3px; }
+  .wd-rc-val  { font-size:14px;font-weight:700;margin-bottom:3px; }
+  .wd-rc-val.up { color:#4ade80; } .wd-rc-val.dn { color:#f87171; } .wd-rc-val.neu { color:#9ca3af; }
+  .wd-rc-desc { font-size:10px;color:#a8a29e;line-height:1.4; }
+  .wd-rverdict {
+    display:flex;align-items:center;justify-content:space-between;
+    background:#1c1917;border-radius:0 8px 8px 0;padding:10px 14px;
+    border-left:4px solid var(--acc);
+  }
+  .wd-rv-text { font-size:12px;font-weight:700;color:#fef3c7;margin-bottom:3px; }
+  .wd-rv-sub  { font-size:10px;color:#a8a29e; }
+  .wd-rv-score{ font-size:22px;font-weight:800;color:var(--acc);margin-left:14px; }
+
 
   .signal-wrap { margin-bottom: 10px; }
 
@@ -205,6 +377,18 @@
     </div>
   </div>
 
+  <!-- ── Navegação de abas ── -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" onclick="switchTab('drivers')" id="tab-btn-drivers">
+      <i class="ti ti-chart-bar" style="font-size:13px;margin-right:5px" aria-hidden="true"></i>15 Drivers
+    </button>
+    <button class="tab-btn" onclick="switchTab('windol')" id="tab-btn-windol">
+      <i class="ti ti-trending-up" style="font-size:13px;margin-right:5px" aria-hidden="true"></i>WIN &amp; DOL — Pré-Abertura 09h
+    </button>
+  </div>
+
+  <!-- ── Aba 1: Drivers ── -->
+  <div class="tab-pane active" id="tab-drivers">
   <div class="grid" id="grid"></div>
 
   <div class="signal-wrap">
@@ -235,6 +419,139 @@
         <div class="panel-pills" id="pills-dn">
           <span class="panel-empty">Aguardando dados…</span>
         </div>
+      </div>
+    </div>
+  </div>
+
+
+  </div><!-- /tab-drivers -->
+
+  <!-- ── Aba 2: WIN & DOL ── -->
+  <div class="tab-pane" id="tab-windol">
+
+  <!-- Clock bar -->
+  <div class="wd-clock-bar">
+    <div class="wd-clock-item">
+      <div class="wd-clock-lbl">Horário BRT</div>
+      <div class="wd-clock-val" id="wd-clock">--:--:--</div>
+    </div>
+    <div class="wd-clock-item">
+      <div class="wd-clock-lbl">Status Janela 09h</div>
+      <div class="wd-clock-val" id="wd-status" style="font-size:13px;">—</div>
+    </div>
+    <div class="wd-clock-item">
+      <div class="wd-clock-lbl">Última atualização</div>
+      <div class="wd-clock-val" id="wd-update" style="font-size:13px;">—</div>
+    </div>
+  </div>
+
+  <!-- Cards WIN + DOL -->
+  <div class="wd-contracts">
+
+    <!-- WIN -->
+    <div class="wd-card" style="border-top:2px solid #58a6ff;">
+      <div class="wd-header">
+        <div><div class="wd-sym">WIN</div><div class="wd-name">Mini Índice Futuro · proxy IBOV</div></div>
+        <span class="wd-tag wd-tag-win">Índice</span>
+      </div>
+      <div class="wd-body">
+        <div class="wd-price-row">
+          <span class="wd-price" id="win-price">—</span>
+          <span class="wd-pct neu" id="win-pct">—</span>
+        </div>
+        <div class="wd-gap gflt" id="win-gap-box">
+          <div>
+            <div class="wd-gap-label">Gap de abertura vs fechamento anterior</div>
+            <div class="wd-gap-val neu" id="win-gap-val">Calculando...</div>
+          </div>
+          <span class="wd-gap-sig flat" id="win-gap-sig">—</span>
+        </div>
+        <div class="wd-metrics">
+          <div class="wd-metric"><div class="wd-metric-lbl">Mínima</div><div class="wd-metric-val" id="win-low">—</div></div>
+          <div class="wd-metric"><div class="wd-metric-lbl">Máxima</div><div class="wd-metric-val" id="win-high">—</div></div>
+          <div class="wd-metric"><div class="wd-metric-lbl">Vol. relativa</div><div class="wd-metric-val" id="win-vol">—</div></div>
+        </div>
+        <div class="wd-dir neutro" id="win-dir">
+          <span class="wd-dir-icon" id="win-dir-icon">⏳</span>
+          <div><div class="wd-dir-text neutro" id="win-dir-text">Aguardando...</div><div class="wd-dir-sub" id="win-dir-sub"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOL -->
+    <div class="wd-card" style="border-top:2px solid #22c55e;">
+      <div class="wd-header">
+        <div><div class="wd-sym">DOL</div><div class="wd-name">Mini Dólar Futuro · proxy USD/BRL</div></div>
+        <span class="wd-tag wd-tag-dol">Câmbio</span>
+      </div>
+      <div class="wd-body">
+        <div class="wd-price-row">
+          <span class="wd-price" id="dol-price">—</span>
+          <span class="wd-pct neu" id="dol-pct">—</span>
+        </div>
+        <div class="wd-gap gflt" id="dol-gap-box">
+          <div>
+            <div class="wd-gap-label">Gap de abertura vs fechamento anterior</div>
+            <div class="wd-gap-val neu" id="dol-gap-val">Calculando...</div>
+          </div>
+          <span class="wd-gap-sig flat" id="dol-gap-sig">—</span>
+        </div>
+        <div class="wd-metrics">
+          <div class="wd-metric"><div class="wd-metric-lbl">Mínima</div><div class="wd-metric-val" id="dol-low">—</div></div>
+          <div class="wd-metric"><div class="wd-metric-lbl">Máxima</div><div class="wd-metric-val" id="dol-high">—</div></div>
+          <div class="wd-metric"><div class="wd-metric-lbl">Spread d/d</div><div class="wd-metric-val" id="dol-spread">—</div></div>
+        </div>
+        <div class="wd-dir neutro" id="dol-dir">
+          <span class="wd-dir-icon" id="dol-dir-icon">⏳</span>
+          <div><div class="wd-dir-text neutro" id="dol-dir-text">Aguardando...</div><div class="wd-dir-sub" id="dol-dir-sub"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Radar pré-abertura 09h -->
+  <div class="wd-radar">
+    <div class="wd-radar-hdr">
+      <div class="wd-radar-hdr-l">
+        <span class="wd-rbadge">RADAR PRÉ-ABERTURA</span>
+        <span class="wd-rtitle">6 drivers-chave · janela 08h50 – 09h00 BRT</span>
+      </div>
+      <span class="wd-rstatus aguarda" id="wd-rstatus">—</span>
+    </div>
+    <div class="wd-radar-body">
+      <div class="wd-rgrid" id="wd-rgrid">
+        <div style="grid-column:1/-1;text-align:center;padding:16px;color:#8b949e;font-size:12px;">Carregando...</div>
+      </div>
+      <div class="wd-rverdict">
+        <div>
+          <div class="wd-rv-text" id="wd-rv-text">Calculando...</div>
+          <div class="wd-rv-sub" id="wd-rv-sub"></div>
+        </div>
+        <div class="wd-rv-score" id="wd-rv-score">—</div>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /tab-windol -->
+
+  <!-- ── Painel Pré-Abertura B3 ─────────────────────────────────────── -->
+  <div id="pre-abertura">
+    <div class="pre-header">
+      <div class="pre-header-left">
+        <span class="pre-badge">⚡ PRÉ-ABERTURA</span>
+        <span class="pre-title">Radar de Pré-Abertura B3 — 6 drivers-chave</span>
+      </div>
+      <span class="pre-countdown" id="pre-countdown"></span>
+    </div>
+    <div class="pre-body">
+      <div class="pre-grid" id="pre-grid"></div>
+      <div class="pre-verdict">
+        <div>
+          <div class="pre-verdict-text" id="pre-verdict-text">Calculando...</div>
+          <div class="pre-verdict-sub" id="pre-verdict-sub"></div>
+        </div>
+        <div class="pre-score" id="pre-score">—</div>
       </div>
     </div>
   </div>
@@ -493,13 +810,256 @@ function tickClock() {
   const p = n => String(n).padStart(2,'0');
   document.getElementById('clock').textContent =
     'BRT ' + p(t.getHours()) + ':' + p(t.getMinutes()) + ':' + p(t.getSeconds());
+  const wdClk = document.getElementById('wd-clock');
+  if(wdClk) wdClk.textContent = p(t.getHours())+':'+p(t.getMinutes())+':'+p(t.getSeconds());
+}
+
+
+// ── Pré-Abertura B3 ──────────────────────────────────────────────────────
+const PRE_ATIVOS = [
+  { key:'dax',    sym:'DAX',     role:'Europa abre antes da B3. Direção principal.',    weight:2 },
+  { key:'es',     sym:'ES1!',    role:'Futuro S&P 24h. Confirma ou diverge do DAX.',   weight:2 },
+  { key:'dxy',    sym:'DXY',     role:'Dólar forte = emergentes pressionados.',         weight:1 },
+  { key:'usdbrl', sym:'USD/BRL', role:'Câmbio local. Alta = pressão vendedora no WIN.', weight:2 },
+  { key:'vix',    sym:'VIX',     role:'Acima de 20 = cautela. Acima de 25 = evitar.',  weight:1 },
+  { key:'wti',    sym:'WTI',     role:'PETR ≈15% Ibov. Petróleo impacta abertura.',    weight:1 },
+];
+
+const PRE_OK = {
+  dax: d => d.pct > 0,
+  es:  d => d.pct > 0,
+  dxy: d => d.pct < 0,
+  usdbrl: d => d.pct < 0,
+  vix: d => d.pct < 0,
+  wti: d => d.pct >= -0.5,
+};
+
+function updatePreAbertura() {
+  const brt = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Sao_Paulo'}));
+  const h = brt.getHours(), m = brt.getMinutes();
+  const minBRT = h * 60 + m;
+  const WIN_START = 9 * 60 + 50;
+  const WIN_END   = 10 * 60 + 5;
+
+  const cdEl = document.getElementById('pre-countdown');
+  if (minBRT < WIN_START) {
+    const diff = WIN_START - minBRT;
+    const dh = Math.floor(diff/60), dm = diff%60;
+    cdEl.textContent = dh > 0 ? `Janela abre em ${dh}h${String(dm).padStart(2,'0')}m` : `Janela abre em ${dm}min`;
+    cdEl.style.color = '#fcd34d';
+  } else if (minBRT <= WIN_END) {
+    const remaining = WIN_END - minBRT;
+    cdEl.textContent = `⚡ JANELA ATIVA — fecha em ${remaining}min`;
+    cdEl.style.color = '#4ade80';
+  } else {
+    cdEl.textContent = 'Janela encerrada · próxima: amanhã 09h50';
+    cdEl.style.color = '#9ca3af';
+  }
+
+  // Montar cards
+  const grid = document.getElementById('pre-grid');
+  grid.innerHTML = '';
+  let bullW = 0, totalW = 0;
+
+  PRE_ATIVOS.forEach(({key, sym, role, weight}) => {
+    const d = latest[key];
+    const ok = d ? PRE_OK[key](d) : null;
+    if (ok !== null) {
+      if (ok) bullW += weight;
+      totalW += weight;
+    }
+    const cls = d === null ? 'neutral' : ok ? 'bull' : 'bear';
+    const val = d ? `${d.pct >= 0 ? '+' : ''}${d.pct.toFixed(2)}%` : '—';
+    const icon = cls === 'bull' ? '▲' : cls === 'bear' ? '▼' : '—';
+    grid.innerHTML += `
+      <div class="pre-card ${cls}">
+        <div class="pc-sym">${sym}</div>
+        <div class="pc-val">${icon} ${val}</div>
+        <div class="pc-desc">${role}</div>
+      </div>`;
+  });
+
+  // Veredicto ponderado
+  const scoreEl = document.getElementById('pre-score');
+  const verdEl  = document.getElementById('pre-verdict-text');
+  const subEl   = document.getElementById('pre-verdict-sub');
+  const pct = totalW > 0 ? bullW / totalW : 0;
+  scoreEl.textContent = `${bullW}/${totalW}`;
+
+  if (pct >= 0.75) {
+    verdEl.textContent = '🟢 ABERTURA FAVORÁVEL À ALTA';
+    verdEl.style.color = '#4ade80';
+    subEl.textContent  = 'Maioria dos drivers ponderados alinhados para compra.';
+  } else if (pct >= 0.5) {
+    verdEl.textContent = '🟡 ABERTURA NEUTRA — aguardar price action';
+    verdEl.style.color = '#fcd34d';
+    subEl.textContent  = 'Drivers mistos. Confirmar nos primeiros candles.';
+  } else {
+    verdEl.textContent = '🔴 ABERTURA DESFAVORÁVEL — pressão vendedora';
+    verdEl.style.color = '#f87171';
+    subEl.textContent  = 'Maioria dos drivers contra alta. Cautela na entrada.';
+  }
+}
+
+
+// ── Tab switcher ──────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('tab-btn-' + name).classList.add('active');
+}
+
+// ── WIN/DOL helpers ───────────────────────────────────────────────────────
+const WD_DRIVERS = [
+  { key:'dax',    sym:'DAX',     ok: d=>d.pct>0,     bull:'Europa ↑',       bear:'Europa ↓',       peso:2 },
+  { key:'es',     sym:'ES1!',    ok: d=>d.pct>0,     bull:'S&P futuro ↑',   bear:'S&P futuro ↓',   peso:2 },
+  { key:'dxy',    sym:'DXY',     ok: d=>d.pct<0,     bull:'USD global ↓',   bear:'USD global ↑',   peso:1 },
+  { key:'usdbrl', sym:'USD/BRL', ok: d=>d.pct<0,     bull:'Câmbio ↓',       bear:'Câmbio ↑',       peso:2 },
+  { key:'vix',    sym:'VIX',     ok: d=>d.pct<0,     bull:'Vol. caindo',    bear:'Vol. subindo',   peso:1 },
+  { key:'wti',    sym:'WTI',     ok: d=>d.pct>=-0.5, bull:'Petróleo OK',    bear:'Petróleo ↓',     peso:1 },
+];
+
+const wdLatest = { dax:null, es:null, dxy:null, usdbrl:null, vix:null, wti:null, win:null, dol:null };
+
+function wdFmt(n, dp=2) {
+  if (n==null||!Number.isFinite(n)) return '—';
+  return n.toLocaleString('pt-BR',{minimumFractionDigits:dp,maximumFractionDigits:dp});
+}
+function wdPct(n) {
+  if (n==null) return '—';
+  return (n>=0?'+':'') + n.toFixed(2) + '%';
+}
+
+function updateWdContract(id, data, isWin) {
+  if (!data) { document.getElementById(id+'-price').textContent='Erro'; return; }
+  const { price, pct, high, low, gapPct, gap, volRel } = data;
+  const dp = isWin ? 0 : 4;
+
+  document.getElementById(id+'-price').textContent = wdFmt(price, dp);
+  const pctEl = document.getElementById(id+'-pct');
+  pctEl.textContent = wdPct(pct);
+  pctEl.className = `wd-pct ${pct>0?'up':pct<0?'dn':'neu'}`;
+
+  document.getElementById(id+'-high').textContent = wdFmt(high, dp);
+  document.getElementById(id+'-low').textContent  = wdFmt(low, dp);
+
+  const volEl = document.getElementById(id + (isWin?'-vol':'-spread'));
+  if (isWin && volRel!=null) {
+    volEl.textContent = volRel.toFixed(1)+'x';
+    volEl.className = `wd-metric-val ${volRel>=1.2?'up':volRel<=0.6?'dn':'acc'}`;
+  } else if (!isWin) {
+    volEl.textContent = wdFmt(high-low, dp);
+    volEl.className = 'wd-metric-val acc';
+  }
+
+  // Gap
+  const gBox = document.getElementById(id+'-gap-box');
+  const gVal  = document.getElementById(id+'-gap-val');
+  const gSig  = document.getElementById(id+'-gap-sig');
+  if (gapPct != null) {
+    const isUp = gapPct > 0.05, isDn = gapPct < -0.05;
+    gBox.className = `wd-gap ${isUp?'gup':isDn?'gdn':'gflt'}`;
+    gVal.className = `wd-gap-val ${isUp?'up':isDn?'dn':'neu'}`;
+    gVal.textContent = `${wdPct(gapPct)} (${gap>=0?'+':''}${wdFmt(gap,dp)})`;
+    gSig.className = `wd-gap-sig ${isUp?'bull':isDn?'bear':'flat'}`;
+    gSig.textContent = isUp?'▲ GAP ALTA':isDn?'▼ GAP BAIXA':'= SEM GAP';
+  }
+
+  // Direção
+  const dir  = document.getElementById(id+'-dir');
+  const dIcon= document.getElementById(id+'-dir-icon');
+  const dTxt = document.getElementById(id+'-dir-text');
+  const dSub = document.getElementById(id+'-dir-sub');
+  let sinal,icon,bcls,tcls,sub;
+
+  if (isWin) {
+    if (pct>0.15&&(gapPct==null||gapPct>=0))      { sinal='COMPRA';  icon='▲';bcls='compra';tcls='compra';sub=`Ibov +${pct.toFixed(2)}%. Gap positivo. Viés de compra.`; }
+    else if (pct<-0.15&&(gapPct==null||gapPct<=0)){ sinal='VENDA';   icon='▼';bcls='venda'; tcls='venda'; sub=`Ibov ${pct.toFixed(2)}%. Gap negativo. Viés de venda.`; }
+    else                                            { sinal='NEUTRO — aguardar price action';icon='↔';bcls='neutro';tcls='neutro';sub='Sinais mistos. Confirmar nos primeiros candles após 09h.'; }
+  } else {
+    if (pct>0.1)       { sinal='USD SUBINDO — DOL compra'; icon='▲';bcls='compra';tcls='compra';sub=`Real caindo ${pct.toFixed(2)}%. Pressão compradora no DOL.`; }
+    else if (pct<-0.1) { sinal='USD CAINDO — DOL venda';   icon='▼';bcls='venda'; tcls='venda'; sub=`Real subindo ${Math.abs(pct).toFixed(2)}%. Pressão vendedora no DOL.`; }
+    else               { sinal='NEUTRO — dólar estável';   icon='↔';bcls='neutro';tcls='neutro';sub='Câmbio estável. Aguardar definição.'; }
+  }
+  dir.className = `wd-dir ${bcls}`;
+  dIcon.textContent = icon;
+  dTxt.className = `wd-dir-text ${tcls}`;
+  dTxt.textContent = sinal;
+  dSub.textContent = sub;
+}
+
+function updateWdRadar() {
+  const brt = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Sao_Paulo'}));
+  const min = brt.getHours()*60+brt.getMinutes();
+  const WS=8*60+50, WE=9*60+0;
+  const stEl = document.getElementById('wd-rstatus');
+  const wdSt = document.getElementById('wd-status');
+
+  if (min<WS) {
+    const d=WS-min;
+    const txt=`Janela abre em ${Math.floor(d/60)}h${String(d%60).padStart(2,'0')}m`;
+    stEl.textContent=txt; stEl.className='wd-rstatus aguarda';
+    wdSt.textContent=txt; wdSt.className='wd-clock-val';
+  } else if (min<=WE) {
+    const txt=`⚡ ATIVA — fecha em ${WE-min}min`;
+    stEl.textContent=txt; stEl.className='wd-rstatus ativo';
+    wdSt.textContent=txt; wdSt.className='wd-clock-val ativo';
+  } else {
+    stEl.textContent='Encerrada · amanhã 08h50'; stEl.className='wd-rstatus closed';
+    wdSt.textContent='Encerrada'; wdSt.className='wd-clock-val'; wdSt.style.color='var(--text2)';
+  }
+
+  const grid = document.getElementById('wd-rgrid');
+  grid.innerHTML='';
+  let bullW=0,totalW=0;
+  WD_DRIVERS.forEach(dr=>{
+    const d=wdLatest[dr.key]||latest[dr.key];
+    const ok=d?dr.ok(d):null;
+    if(ok!==null){if(ok)bullW+=dr.peso;totalW+=dr.peso;}
+    const cls=!d?'':ok?'bull':'bear';
+    const val=d?wdPct(d.pct):'—';
+    const arr=!d?'—':ok?'▲':'▼';
+    const vc=!d?'neu':ok?'up':'dn';
+    const desc=!d?'Sem dado':ok?dr.bull:dr.bear;
+    grid.innerHTML+=`<div class="wd-rc ${cls}"><div class="wd-rc-sym">${dr.sym}</div><div class="wd-rc-val ${vc}">${arr} ${val}</div><div class="wd-rc-desc">${desc}</div></div>`;
+  });
+
+  const pct=totalW>0?bullW/totalW:0;
+  const rvTxt=document.getElementById('wd-rv-text');
+  const rvSub=document.getElementById('wd-rv-sub');
+  document.getElementById('wd-rv-score').textContent=`${bullW}/${totalW}`;
+  if(pct>=0.75){rvTxt.textContent='🟢 ABERTURA WIN FAVORÁVEL À ALTA';rvTxt.style.color='#4ade80';rvSub.textContent='Maioria dos drivers alinhados para compra no WIN.';}
+  else if(pct>=0.5){rvTxt.textContent='🟡 NEUTRO — aguardar price action';rvTxt.style.color='#fcd34d';rvSub.textContent='Sinais mistos. Confirmar nos primeiros candles após 09h.';}
+  else{rvTxt.textContent='🔴 PRESSÃO VENDEDORA — cautela no WIN';rvTxt.style.color='#f87171';rvSub.textContent='Maioria dos drivers contra alta. Possível gap de baixa.';}
+}
+
+async function refreshWD() {
+  const [win, dol] = await Promise.all([
+    fetchYF('%5EBVSP'),
+    fetchYF('BRL=X'),
+  ]);
+  wdLatest.win=win; wdLatest.dol=dol;
+  updateWdContract('win', win, true);
+  updateWdContract('dol', dol, false);
+
+  const brt=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Sao_Paulo'}));
+  const p=n=>String(n).padStart(2,'0');
+  document.getElementById('wd-update').textContent=`${p(brt.getHours())}:${p(brt.getMinutes())}`;
+  document.getElementById('wd-clock').textContent=`${p(brt.getHours())}:${p(brt.getMinutes())}:${p(brt.getSeconds())}`;
+  updateWdRadar();
 }
 
 buildGrid();
 refreshAll();
+refreshWD();
 setInterval(refreshAll, 300_000);
 tickClock();
 setInterval(tickClock, 1000);
+setInterval(refreshWD, 300_000);
+setInterval(updateWdRadar, 30_000);
+updatePreAbertura();
+setInterval(updatePreAbertura, 30_000);
 </script>
 </body>
 </html>
